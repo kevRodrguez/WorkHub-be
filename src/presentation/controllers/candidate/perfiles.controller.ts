@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { PerfilesService } from "../../services/perfiles.service";
+import { PerfilesService } from "../../../services/perfiles.service";
 
-export const PerfilesController = {
+export const PerfilesCandidateController = {
   async getPerfiles(req: Request, res: Response) {
     try {
       const perfiles = await PerfilesService.getPerfiles();

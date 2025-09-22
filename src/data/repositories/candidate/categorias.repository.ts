@@ -1,4 +1,4 @@
-import { pool } from "../../config/db";
+import { pool } from "../../../config/db";
 
 export const CategoriasRepository = {
   async getCategorias() {

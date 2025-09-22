@@ -1,4 +1,4 @@
-import { CategoriasRepository } from "../data/repositories/categorias.repository";
+import { CategoriasRepository } from "../data/repositories/candidate/categorias.repository";
 
 export const CategoriasService = {
   async getCategorias() {

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { CategoriasService } from "../../services/categorias.service";
+import { CategoriasService } from "../../../services/categorias.service";
 
-export const CategoriasController = {
+export const CategoriasCandidateController = {
   async getCategorias(req: Request, res: Response) {
     try {
       const categorias = await CategoriasService.getCategorias();
