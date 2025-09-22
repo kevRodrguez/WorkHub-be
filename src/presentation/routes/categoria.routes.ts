@@ -6,6 +6,10 @@ export class CategoriaRoutes {
     const router = Router();
 
     router.get("/", CategoriasController.getCategorias);
+    router.get("/:id", CategoriasController.getCategoriaById);
+    router.post("/", CategoriasController.insertarCategoria);
+    router.put("/:id", CategoriasController.actualizarCategoria);
+    router.delete("/:id", CategoriasController.eliminarCategoria);
 
     return router;
   }
