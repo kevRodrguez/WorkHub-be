@@ -1,13 +1,23 @@
 import { Request, Response } from "express";
 import { PerfilesService } from "../../../services/candidate/perfiles.service";
+import { CrearPerfilDTO, ActualizarPerfilDTO } from "../../../interfaces/perfil.interface";
+import { ValidationError, NotFoundError, BusinessRuleError } from "../../../utils/errors";
 
 export const PerfilesCandidateController = {
   async getPerfiles(req: Request, res: Response) {
     try {
       const perfiles = await PerfilesService.getPerfiles();
-      res.json(perfiles);
+      res.json({
+        success: true,
+        data: perfiles,
+        message: "Perfiles obtenidos exitosamente"
+      });
     } catch (error) {
-      res.status(500).json({ message: (error as Error).message });
+      res.status(500).json({
+        success: false,
+        message: "Error interno del servidor",
+        error: (error as Error).message
+      });
     }
   },
 
@@ -15,89 +25,146 @@ export const PerfilesCandidateController = {
     try {
       const id = parseInt(req.params.id, 10);
       const perfil = await PerfilesService.getPerfilById(id);
-      if (perfil) {
-        res.json(perfil);
-      } else {
-        res.status(404).json({ message: "Perfil no encontrado" });
-      }
+
+      res.json({
+        success: true,
+        data: perfil,
+        message: "Perfil obtenido exitosamente"
+      });
     } catch (error) {
-      res.status(500).json({ message: (error as Error).message });
+      if (error instanceof ValidationError) {
+        res.status(400).json({
+          success: false,
+          message: error.message,
+          field: error.field
+        });
+      } else if (error instanceof NotFoundError) {
+        res.status(404).json({
+          success: false,
+          message: error.message
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Error interno del servidor",
+          error: (error as Error).message
+        });
+      }
     }
   },
 
   async insertarPerfil(req: Request, res: Response) {
     try {
-      const {
-        id_usuario,
-        nombre,
-        biografia,
-        telefono,
-        link_foto_perfil,
-        fecha_nacimiento_fundacion,
-        genero,
-        estado_civil,
-        ubicacion,
-        pagina_web,
-        red_social,
-      } = req.body;
+      const datos: CrearPerfilDTO = {
+        ...req.body,
+        fecha_nacimiento_fundacion: new Date(req.body.fecha_nacimiento_fundacion)
+      };
 
-      const nuevoPerfil = await PerfilesService.insertarPerfil(
-        id_usuario,
-        nombre,
-        biografia,
-        telefono,
-        link_foto_perfil,
-        fecha_nacimiento_fundacion,
-        genero,
-        estado_civil,
-        ubicacion,
-        pagina_web,
-        red_social
-      );
+      const nuevoPerfil = await PerfilesService.insertarPerfil(datos);
 
-      res.status(201).json(nuevoPerfil);
+      res.status(201).json({
+        success: true,
+        data: nuevoPerfil,
+        message: "Perfil creado exitosamente"
+      });
     } catch (error) {
-      res.status(500).json({ message: (error as Error).message });
+      if (error instanceof ValidationError) {
+        res.status(400).json({
+          success: false,
+          message: error.message,
+          field: error.field
+        });
+      } else if (error instanceof BusinessRuleError) {
+        res.status(409).json({
+          success: false,
+          message: error.message
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Error interno del servidor",
+          error: (error as Error).message
+        });
+      }
     }
   },
 
   async actualizarPerfil(req: Request, res: Response) {
     try {
-      const id = parseInt(req.params.id);
-      const {
-        nombre,
-        biografia,
-        telefono,
-        link_foto_perfil,
-        fecha_nacimiento_fundacion,
-        genero,
-        estado_civil,
-        ubicacion,
-        pagina_web,
-        red_social,
-      } = req.body;
+      const id = parseInt(req.params.id, 10);
+      const datos: ActualizarPerfilDTO = {
+        ...req.body,
+        fecha_nacimiento_fundacion: new Date(req.body.fecha_nacimiento_fundacion)
+      };
 
-      const perfilActualizado = await PerfilesService.actualizarPerfil(
-        id,
-        nombre,
-        biografia,
-        telefono,
-        link_foto_perfil,
-        fecha_nacimiento_fundacion,
-        genero,
-        estado_civil,
-        ubicacion,
-        pagina_web,
-        red_social
-      );
+      const perfilActualizado = await PerfilesService.actualizarPerfil(id, datos);
 
-      if (perfilActualizado) {
-        res.json("Perfil actualizado con éxito");
-      } else {
-        res.status(404).json({ message: "Perfil no encontrado" });
-      }
+      res.json({
+        success: true,
+        data: perfilActualizado,
+        message: "Perfil actualizado exitosamente"
+      });
     } catch (error) {
-      res.status(500).json({ message: (error as Error).message });
+      if (error instanceof ValidationError) {
+        res.status(400).json({
+          success: false,
+          message: error.message,
+          field: error.field
+        });
+      } else if (error instanceof NotFoundError) {
+        res.status(404).json({
+          success: false,
+          message: error.message
+        });
+      } else if (error instanceof BusinessRuleError) {
+        res.status(409).json({
+          success: false,
+          message: error.message
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Error interno del servidor",
+          error: (error as Error).message
+        });
+      }
+    }
+  },
+
+  async eliminarPerfil(req: Request, res: Response) {
+    try {
+      const id = parseInt(req.params.id, 10);
+      const perfilEliminado = await PerfilesService.eliminarPerfil(id);
+
+      res.json({
+        success: true,
+        data: perfilEliminado,
+        message: "Perfil eliminado exitosamente"
+      });
+    } catch (error) {
+      if (error instanceof ValidationError) {
+        res.status(400).json({
+          success: false,
+          message: error.message,
+          field: error.field
+        });
+      } else if (error instanceof NotFoundError) {
+        res.status(404).json({
+          success: false,
+          message: error.message
+        });
+      } else if (error instanceof BusinessRuleError) {
+        res.status(409).json({
+          success: false,
+          message: error.message
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Error interno del servidor",
+          error: (error as Error).message
+        });
+      }
     }
   },
 };
