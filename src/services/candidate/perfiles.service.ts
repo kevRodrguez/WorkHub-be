@@ -1,4 +1,4 @@
-import { PerfilesRepository } from "../data/repositories/candidate/perfiles.repository";
+import { PerfilesRepository } from "../../data/repositories/candidate/perfiles.repository";
 
 export const PerfilesService = {
   async getPerfiles() {

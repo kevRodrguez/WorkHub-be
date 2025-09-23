@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { PerfilesCandidateController } from "../../controllers/candidate/perfiles.controller";
+import { PerfilesCandidateController } from "../../candidate/perfiles/perfiles.controller";
 
 export class PerfilEnterpriseRoutes {
     static get routes(): Router {

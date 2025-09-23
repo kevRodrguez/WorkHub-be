@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PerfilesService } from "../../../services/perfiles.service";
+import { PerfilesService } from "../../../services/candidate/perfiles.service";
 
 export const PerfilesCandidateController = {
   async getPerfiles(req: Request, res: Response) {

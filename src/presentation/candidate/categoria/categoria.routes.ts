@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { CategoriasCandidateController } from "../../controllers/candidate/categorias.controller";
+import { CategoriasCandidateController } from "./categorias.controller";
 
 export class CategoriaCandidateRoutes {
   static get routes(): Router {
