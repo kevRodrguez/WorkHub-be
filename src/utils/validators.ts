@@ -29,7 +29,8 @@ export class Validators {
             str.trim().length <= maxLength;
     }
 
-    static sanitizeString(str: string): string {
+    static sanitizeString(str?: string): string {
+        if (!str) return '';
         return str.trim();
     }
 

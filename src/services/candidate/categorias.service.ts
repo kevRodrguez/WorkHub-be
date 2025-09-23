@@ -16,11 +16,7 @@ export const CategoriasService = {
   },
 
   async getCategoriaById(id: number): Promise<Categoria> {
-    // Validar ID
-    if (!id || id <= 0) {
-      throw new ValidationError("El ID de la categoría debe ser un número positivo");
-    }
-
+    // express-validator ya validó que id sea positivo
     const categoria = await CategoriasRepository.getCategoriaById(id);
 
     if (!categoria) {
@@ -31,16 +27,14 @@ export const CategoriasService = {
   },
 
   async insertarCategoria(datos: CrearCategoriaDTO): Promise<Categoria> {
-    // Validaciones de entrada
-    this.validarDatosCategoria(datos);
-
-    // Verificar que no exista una categoría con el mismo nombre
+    // Las validaciones básicas las maneja express-validator
+    // Solo validaciones de negocio específicas aquí
     await this.verificarNombreUnico(datos.nombre_categoria);
 
-    // Sanitizar datos
+    // Sanitizar datos (express-validator ya sanitiza los básicos)
     const datosSanitizados = {
-      nombre_categoria: Validators.sanitizeString(datos.nombre_categoria),
-      descripcion: Validators.sanitizeString(datos.descripcion)
+      nombre_categoria: datos.nombre_categoria.trim(),
+      descripcion: datos.descripcion.trim()
     };
 
     return await CategoriasRepository.insertarCategoria(
@@ -53,13 +47,7 @@ export const CategoriasService = {
     id_categoria: number,
     datos: ActualizarCategoriaDTO
   ): Promise<Categoria> {
-    // Validar ID
-    if (!id_categoria || id_categoria <= 0) {
-      throw new ValidationError("El ID de la categoría debe ser un número positivo");
-    }
-
-    // Validaciones de entrada
-    this.validarDatosCategoria(datos);
+    // express-validator ya validó que id_categoria sea positivo y los datos básicos
 
     // Verificar que la categoría existe
     await this.getCategoriaById(id_categoria);
@@ -69,8 +57,8 @@ export const CategoriasService = {
 
     // Sanitizar datos
     const datosSanitizados = {
-      nombre_categoria: Validators.sanitizeString(datos.nombre_categoria),
-      descripcion: Validators.sanitizeString(datos.descripcion)
+      nombre_categoria: datos.nombre_categoria.trim(),
+      descripcion: datos.descripcion.trim()
     };
 
     const categoriaActualizada = await CategoriasRepository.actualizarCategoria(
@@ -87,10 +75,7 @@ export const CategoriasService = {
   },
 
   async eliminarCategoria(id_categoria: number): Promise<Categoria> {
-    // Validar ID
-    if (!id_categoria || id_categoria <= 0) {
-      throw new ValidationError("El ID de la categoría debe ser un número positivo");
-    }
+    // express-validator ya validó que id_categoria sea positivo
 
     // Verificar que la categoría existe
     await this.getCategoriaById(id_categoria);
@@ -110,25 +95,7 @@ export const CategoriasService = {
     return categoriaEliminada;
   },
 
-  // Métodos privados de validación
-  validarDatosCategoria(datos: CrearCategoriaDTO | ActualizarCategoriaDTO): void {
-    if (!datos.nombre_categoria) {
-      throw new ValidationError("El nombre de la categoría es requerido", "nombre_categoria");
-    }
-
-    if (!Validators.isValidString(datos.nombre_categoria, 2, 100)) {
-      throw new ValidationError("El nombre de la categoría debe tener entre 2 y 100 caracteres", "nombre_categoria");
-    }
-
-    if (!datos.descripcion) {
-      throw new ValidationError("La descripción es requerida", "descripcion");
-    }
-
-    if (!Validators.isValidString(datos.descripcion, 10, 500)) {
-      throw new ValidationError("La descripción debe tener entre 10 y 500 caracteres", "descripcion");
-    }
-  },
-
+  // Validaciones de negocio (no cubiertas por express-validator)
   async verificarNombreUnico(nombre: string, idExcluir?: number): Promise<void> {
     const categorias = await CategoriasRepository.getCategorias();
 

@@ -5,4 +5,5 @@
 // import { Usuario } from './interfaces/usuario.interface';
 
 export * from './categoria.interface';
-export * from './perfil.interface';
+export * from './perfil.candidate.interface';
+export * from './perfil.enterprise.interface';

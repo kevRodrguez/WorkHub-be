@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
-import { PerfilesService } from "../../../services/candidate/perfiles.service";
-import { CrearPerfilDTO, ActualizarPerfilDTO } from "../../../interfaces/perfil.interface";
+import { PerfilesCandidateService } from "../../../services/candidate/perfiles.service";
+import { CrearPerfilDTO, ActualizarPerfilDTO } from "../../../interfaces/perfil.candidate.interface";
 import { ValidationError, NotFoundError, BusinessRuleError } from "../../../utils/errors";
 
 export const PerfilesCandidateController = {
   async getPerfiles(req: Request, res: Response) {
     try {
-      const perfiles = await PerfilesService.getPerfiles();
+      const perfiles = await PerfilesCandidateService.getPerfiles();
       res.json({
         success: true,
         data: perfiles,
@@ -24,7 +24,7 @@ export const PerfilesCandidateController = {
   async getPerfilById(req: Request, res: Response) {
     try {
       const id = parseInt(req.params.id, 10);
-      const perfil = await PerfilesService.getPerfilById(id);
+      const perfil = await PerfilesCandidateService.getPerfilById(id);
 
       res.json({
         success: true,
@@ -60,7 +60,7 @@ export const PerfilesCandidateController = {
         fecha_nacimiento_fundacion: new Date(req.body.fecha_nacimiento_fundacion)
       };
 
-      const nuevoPerfil = await PerfilesService.insertarPerfil(datos);
+      const nuevoPerfil = await PerfilesCandidateService.insertarPerfil(datos);
 
       res.status(201).json({
         success: true,
@@ -97,7 +97,7 @@ export const PerfilesCandidateController = {
         fecha_nacimiento_fundacion: new Date(req.body.fecha_nacimiento_fundacion)
       };
 
-      const perfilActualizado = await PerfilesService.actualizarPerfil(id, datos);
+      const perfilActualizado = await PerfilesCandidateService.actualizarPerfil(id, datos);
 
       res.json({
         success: true,
@@ -134,7 +134,7 @@ export const PerfilesCandidateController = {
   async eliminarPerfil(req: Request, res: Response) {
     try {
       const id = parseInt(req.params.id, 10);
-      const perfilEliminado = await PerfilesService.eliminarPerfil(id);
+      const perfilEliminado = await PerfilesCandidateService.eliminarPerfil(id);
 
       res.json({
         success: true,
