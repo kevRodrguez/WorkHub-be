@@ -1,7 +1,14 @@
 import { Request, Response } from "express";
 import { CategoriasService } from "../../../services/candidate/categorias.service";
-import { CrearCategoriaDTO, ActualizarCategoriaDTO } from "../../../interfaces/categoria.interface";
-import { ValidationError, NotFoundError, BusinessRuleError } from "../../../utils/errors";
+import {
+  CrearCategoriaDTO,
+  ActualizarCategoriaDTO,
+} from "../../../interfaces/categoria.interface";
+import {
+  ValidationError,
+  NotFoundError,
+  BusinessRuleError,
+} from "../../../utils/errors";
 
 export const CategoriasCandidateController = {
   async getCategorias(req: Request, res: Response) {
@@ -10,13 +17,13 @@ export const CategoriasCandidateController = {
       res.json({
         success: true,
         data: categorias,
-        message: "Categorías obtenidas exitosamente"
+        message: "Categorías obtenidas exitosamente",
       });
     } catch (error) {
       res.status(500).json({
         success: false,
         message: "Error interno del servidor",
-        error: (error as Error).message
+        error: (error as Error).message,
       });
     }
   },
@@ -29,25 +36,25 @@ export const CategoriasCandidateController = {
       res.json({
         success: true,
         data: categoria,
-        message: "Categoría obtenida exitosamente"
+        message: "Categoría obtenida exitosamente",
       });
     } catch (error) {
       if (error instanceof ValidationError) {
         res.status(400).json({
           success: false,
           message: error.message,
-          field: error.field
+          field: error.field,
         });
       } else if (error instanceof NotFoundError) {
         res.status(404).json({
           success: false,
-          message: error.message
+          message: error.message,
         });
       } else {
         res.status(500).json({
           success: false,
           message: "Error interno del servidor",
-          error: (error as Error).message
+          error: (error as Error).message,
         });
       }
     }
@@ -61,25 +68,25 @@ export const CategoriasCandidateController = {
       res.status(201).json({
         success: true,
         data: nuevaCategoria,
-        message: "Categoría creada exitosamente"
+        message: "Categoría creada exitosamente",
       });
     } catch (error) {
       if (error instanceof ValidationError) {
         res.status(400).json({
           success: false,
           message: error.message,
-          field: error.field
+          field: error.field,
         });
       } else if (error instanceof BusinessRuleError) {
         res.status(409).json({
           success: false,
-          message: error.message
+          message: error.message,
         });
       } else {
         res.status(500).json({
           success: false,
           message: "Error interno del servidor",
-          error: (error as Error).message
+          error: (error as Error).message,
         });
       }
     }
@@ -89,35 +96,38 @@ export const CategoriasCandidateController = {
     try {
       const id = parseInt(req.params.id, 10);
       const datos: ActualizarCategoriaDTO = req.body;
-      const categoriaActualizada = await CategoriasService.actualizarCategoria(id, datos);
+      const categoriaActualizada = await CategoriasService.actualizarCategoria(
+        id,
+        datos
+      );
 
       res.json({
         success: true,
         data: categoriaActualizada,
-        message: "Categoría actualizada exitosamente"
+        message: "Categoría actualizada exitosamente",
       });
     } catch (error) {
       if (error instanceof ValidationError) {
         res.status(400).json({
           success: false,
           message: error.message,
-          field: error.field
+          field: error.field,
         });
       } else if (error instanceof NotFoundError) {
         res.status(404).json({
           success: false,
-          message: error.message
+          message: error.message,
         });
       } else if (error instanceof BusinessRuleError) {
         res.status(409).json({
           success: false,
-          message: error.message
+          message: error.message,
         });
       } else {
         res.status(500).json({
           success: false,
           message: "Error interno del servidor",
-          error: (error as Error).message
+          error: (error as Error).message,
         });
       }
     }
@@ -131,30 +141,30 @@ export const CategoriasCandidateController = {
       res.json({
         success: true,
         data: categoriaEliminada,
-        message: "Categoría eliminada exitosamente"
+        message: "Categoría eliminada exitosamente",
       });
     } catch (error) {
       if (error instanceof ValidationError) {
         res.status(400).json({
           success: false,
           message: error.message,
-          field: error.field
+          field: error.field,
         });
       } else if (error instanceof NotFoundError) {
         res.status(404).json({
           success: false,
-          message: error.message
+          message: error.message,
         });
       } else if (error instanceof BusinessRuleError) {
         res.status(409).json({
           success: false,
-          message: error.message
+          message: error.message,
         });
       } else {
         res.status(500).json({
           success: false,
           message: "Error interno del servidor",
-          error: (error as Error).message
+          error: (error as Error).message,
         });
       }
     }

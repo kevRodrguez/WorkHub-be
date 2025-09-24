@@ -9,25 +9,29 @@ export class CategoriaCandidateRoutes {
 
     router.get("/", CategoriasCandidateController.getCategorias);
 
-    router.get("/:id",
+    router.get(
+      "/:id",
       ExpressValidators.validarIdParametro(),
       handleValidationErrors,
       CategoriasCandidateController.getCategoriaById
     );
 
-    router.post("/",
+    router.post(
+      "/",
       ExpressValidators.crearCategoria(),
       handleValidationErrors,
       CategoriasCandidateController.insertarCategoria
     );
 
-    router.put("/:id",
+    router.put(
+      "/:id",
       ExpressValidators.actualizarCategoria(),
       handleValidationErrors,
       CategoriasCandidateController.actualizarCategoria
     );
 
-    router.delete("/:id",
+    router.delete(
+      "/:id",
       ExpressValidators.validarIdParametro(),
       handleValidationErrors,
       CategoriasCandidateController.eliminarCategoria

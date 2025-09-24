@@ -19,7 +19,10 @@ export const CategoriasRepository = {
     return result.rows[0] || null;
   },
 
-  async insertarCategoria(nombre_categoria: string, descripcion: string): Promise<Categoria> {
+  async insertarCategoria(
+    nombre_categoria: string,
+    descripcion: string
+  ): Promise<Categoria> {
     const result = await pool.query(
       "INSERT INTO categorias (nombre_categoria, descripcion) VALUES ($1, $2) RETURNING *",
       [nombre_categoria, descripcion]

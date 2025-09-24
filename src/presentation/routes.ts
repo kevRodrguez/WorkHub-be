@@ -2,7 +2,6 @@ import { Router } from "express";
 import { CandidateRoutes } from "./candidate/routes";
 import { EnterpriseRoutes } from "./enterprise/routes";
 
-
 export class AppRoutes {
   static get routes(): Router {
     const router = Router();
@@ -12,13 +11,8 @@ export class AppRoutes {
     // Rutas del candidato
     router.use("/api/candidate", CandidateRoutes.routes);
 
-
-
-
     // Rutas de la empresa
     router.use("/api/enterprise", EnterpriseRoutes.routes);
-
-
 
     return router;
   }

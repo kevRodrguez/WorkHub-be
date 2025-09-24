@@ -1,7 +1,14 @@
 import { Request, Response } from "express";
 import { PerfilesCandidateService } from "../../../services/candidate/perfiles.service";
-import { CrearPerfilDTO, ActualizarPerfilDTO } from "../../../interfaces/perfil.candidate.interface";
-import { ValidationError, NotFoundError, BusinessRuleError } from "../../../utils/errors";
+import {
+  CrearPerfilDTO,
+  ActualizarPerfilDTO,
+} from "../../../interfaces/perfil.candidate.interface";
+import {
+  ValidationError,
+  NotFoundError,
+  BusinessRuleError,
+} from "../../../utils/errors";
 
 export const PerfilesCandidateController = {
   async getPerfiles(req: Request, res: Response) {
@@ -10,13 +17,13 @@ export const PerfilesCandidateController = {
       res.json({
         success: true,
         data: perfiles,
-        message: "Perfiles obtenidos exitosamente"
+        message: "Perfiles obtenidos exitosamente",
       });
     } catch (error) {
       res.status(500).json({
         success: false,
         message: "Error interno del servidor",
-        error: (error as Error).message
+        error: (error as Error).message,
       });
     }
   },
@@ -29,25 +36,25 @@ export const PerfilesCandidateController = {
       res.json({
         success: true,
         data: perfil,
-        message: "Perfil obtenido exitosamente"
+        message: "Perfil obtenido exitosamente",
       });
     } catch (error) {
       if (error instanceof ValidationError) {
         res.status(400).json({
           success: false,
           message: error.message,
-          field: error.field
+          field: error.field,
         });
       } else if (error instanceof NotFoundError) {
         res.status(404).json({
           success: false,
-          message: error.message
+          message: error.message,
         });
       } else {
         res.status(500).json({
           success: false,
           message: "Error interno del servidor",
-          error: (error as Error).message
+          error: (error as Error).message,
         });
       }
     }
@@ -57,7 +64,9 @@ export const PerfilesCandidateController = {
     try {
       const datos: CrearPerfilDTO = {
         ...req.body,
-        fecha_nacimiento_fundacion: new Date(req.body.fecha_nacimiento_fundacion)
+        fecha_nacimiento_fundacion: new Date(
+          req.body.fecha_nacimiento_fundacion
+        ),
       };
 
       const nuevoPerfil = await PerfilesCandidateService.insertarPerfil(datos);
@@ -65,25 +74,25 @@ export const PerfilesCandidateController = {
       res.status(201).json({
         success: true,
         data: nuevoPerfil,
-        message: "Perfil creado exitosamente"
+        message: "Perfil creado exitosamente",
       });
     } catch (error) {
       if (error instanceof ValidationError) {
         res.status(400).json({
           success: false,
           message: error.message,
-          field: error.field
+          field: error.field,
         });
       } else if (error instanceof BusinessRuleError) {
         res.status(409).json({
           success: false,
-          message: error.message
+          message: error.message,
         });
       } else {
         res.status(500).json({
           success: false,
           message: "Error interno del servidor",
-          error: (error as Error).message
+          error: (error as Error).message,
         });
       }
     }
@@ -94,38 +103,43 @@ export const PerfilesCandidateController = {
       const id = parseInt(req.params.id, 10);
       const datos: ActualizarPerfilDTO = {
         ...req.body,
-        fecha_nacimiento_fundacion: new Date(req.body.fecha_nacimiento_fundacion)
+        fecha_nacimiento_fundacion: new Date(
+          req.body.fecha_nacimiento_fundacion
+        ),
       };
 
-      const perfilActualizado = await PerfilesCandidateService.actualizarPerfil(id, datos);
+      const perfilActualizado = await PerfilesCandidateService.actualizarPerfil(
+        id,
+        datos
+      );
 
       res.json({
         success: true,
         data: perfilActualizado,
-        message: "Perfil actualizado exitosamente"
+        message: "Perfil actualizado exitosamente",
       });
     } catch (error) {
       if (error instanceof ValidationError) {
         res.status(400).json({
           success: false,
           message: error.message,
-          field: error.field
+          field: error.field,
         });
       } else if (error instanceof NotFoundError) {
         res.status(404).json({
           success: false,
-          message: error.message
+          message: error.message,
         });
       } else if (error instanceof BusinessRuleError) {
         res.status(409).json({
           success: false,
-          message: error.message
+          message: error.message,
         });
       } else {
         res.status(500).json({
           success: false,
           message: "Error interno del servidor",
-          error: (error as Error).message
+          error: (error as Error).message,
         });
       }
     }
@@ -139,30 +153,30 @@ export const PerfilesCandidateController = {
       res.json({
         success: true,
         data: perfilEliminado,
-        message: "Perfil eliminado exitosamente"
+        message: "Perfil eliminado exitosamente",
       });
     } catch (error) {
       if (error instanceof ValidationError) {
         res.status(400).json({
           success: false,
           message: error.message,
-          field: error.field
+          field: error.field,
         });
       } else if (error instanceof NotFoundError) {
         res.status(404).json({
           success: false,
-          message: error.message
+          message: error.message,
         });
       } else if (error instanceof BusinessRuleError) {
         res.status(409).json({
           success: false,
-          message: error.message
+          message: error.message,
         });
       } else {
         res.status(500).json({
           success: false,
           message: "Error interno del servidor",
-          error: (error as Error).message
+          error: (error as Error).message,
         });
       }
     }

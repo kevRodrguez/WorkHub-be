@@ -9,13 +9,15 @@ export class PerfilCandidateRoutes {
 
     router.get("/", PerfilesCandidateController.getPerfiles);
 
-    router.get("/:id",
+    router.get(
+      "/:id",
       ExpressValidators.validarIdParametro(),
       handleValidationErrors,
       PerfilesCandidateController.getPerfilById
     );
 
-    router.post("/",
+    router.post(
+      "/",
       ExpressValidators.crearPerfilCandidato(),
       handleValidationErrors,
       PerfilesCandidateController.insertarPerfil

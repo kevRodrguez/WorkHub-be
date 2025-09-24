@@ -1,7 +1,6 @@
 import express, { Router } from "express";
 import path from "path";
-import cors from 'cors'
-
+import cors from "cors";
 
 interface Options {
   port: number;
@@ -29,11 +28,11 @@ export class Server {
     this.app.use(express.urlencoded({ extended: true })); // x-www-form-urlencoded
 
     // CORS
-    this.app.use(cors({
-      origin: [
-        'http://localhost:4000',
-      ]
-    }));
+    this.app.use(
+      cors({
+        origin: ["http://localhost:4000"],
+      })
+    );
 
     //* Public Folder
     this.app.use(express.static(this.publicPath));
