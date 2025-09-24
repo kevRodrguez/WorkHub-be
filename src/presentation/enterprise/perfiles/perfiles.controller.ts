@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { CrearPerfilEmpresaDTO, ActualizarPerfilEmpresaDTO, PerfilEmpresa } from "../../../interfaces/perfil.enterprise.interface";
 import { PerfilesEnterpriseService } from "../../../services/enterprise/perfiles.service";
 import { ValidationError, NotFoundError, BusinessRuleError } from "../../../utils/errors";
+import { UUID } from "crypto";
 
 export const PerfilesEnterpriseController = {
 
@@ -58,7 +59,7 @@ export const PerfilesEnterpriseController = {
 
     async getPerfilById(req: Request, res: Response) {
         try {
-            const id = parseInt(req.params.id, 10);
+            const id = req.params.id as UUID;
             const perfil = await PerfilesEnterpriseService.getPerfilById(id);
 
             res.json({
@@ -90,7 +91,7 @@ export const PerfilesEnterpriseController = {
 
     async actualizarPerfil(req: Request, res: Response) {
         try {
-            const id = parseInt(req.params.id, 10);
+            const id = req.params.id as UUID;
             const datos: ActualizarPerfilEmpresaDTO = {
                 ...req.body,
                 fecha_nacimiento_fundacion: req.body.fecha_nacimiento_fundacion ?
@@ -133,7 +134,7 @@ export const PerfilesEnterpriseController = {
 
     async eliminarPerfil(req: Request, res: Response) {
         try {
-            const id = parseInt(req.params.id, 10);
+            const id = req.params.id as UUID;
             const perfilEliminado = await PerfilesEnterpriseService.eliminarPerfil(id);
 
             res.json({

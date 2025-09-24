@@ -1,3 +1,5 @@
+// Estas son validaciones que express-validator no cubre, o que necesitamos en la lógica de negocio
+
 export class Validators {
     static isValidEmail(email: string): boolean {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

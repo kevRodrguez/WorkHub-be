@@ -15,11 +15,9 @@ export class PerfilEnterpriseRoutes {
 
         router.get("/", PerfilesEnterpriseController.getPerfiles);
 
-        router.get("/:id",
-            ExpressValidators.validarIdParametro(),
-            handleValidationErrors,
-            PerfilesEnterpriseController.getPerfilById
-        );
+        router.get("/:id", (req, res) => {
+            PerfilesEnterpriseController.getPerfilById(req, res);
+        });
 
         router.put("/:id",
             ExpressValidators.actualizarPerfilEmpresa(),

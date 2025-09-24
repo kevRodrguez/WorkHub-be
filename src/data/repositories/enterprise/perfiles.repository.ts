@@ -1,3 +1,4 @@
+import { UUID } from "crypto";
 import { pool } from "../../../config/db";
 import { PerfilEmpresa } from "../../../interfaces/perfil.enterprise.interface";
 
@@ -42,16 +43,16 @@ export const PerfilesEnterpriseRepository = {
         return result.rows;
     },
 
-    async getPerfilById(id: number): Promise<PerfilEmpresa | null> {
+    async getPerfilById(id: UUID): Promise<PerfilEmpresa | null> {
         const result = await pool.query(
-            "SELECT * FROM perfiles WHERE id_perfil = $1",
+            "SELECT * FROM perfiles WHERE id_usuario = $1",
             [id]
         );
         return result.rows[0] || null;
     },
 
     async actualizarPerfil(
-        id_perfil: number,
+        id_usuario: UUID,
         nombre?: string,
         biografia?: string,
         telefono?: string,
@@ -69,7 +70,7 @@ export const PerfilesEnterpriseRepository = {
           nombre = $1, biografia = $2, telefono = $3, link_foto_perfil = $4, 
           fecha_nacimiento_fundacion = $5, genero = $6, estado_civil = $7, 
           ubicacion = $8, pagina_web = $9, red_social = $10, email = $11
-          WHERE id_perfil = $12 RETURNING *`,
+          WHERE id_usuario = $12 RETURNING *`,
             [
                 nombre,
                 biografia,
@@ -82,16 +83,16 @@ export const PerfilesEnterpriseRepository = {
                 pagina_web,
                 red_social,
                 email,
-                id_perfil,
+                id_usuario,
             ]
         );
         return result.rows[0] || null;
     },
 
-    async eliminarPerfil(id_perfil: number): Promise<PerfilEmpresa | null> {
+    async eliminarPerfil(id_usuario: UUID): Promise<PerfilEmpresa | null> {
         const result = await pool.query(
-            "DELETE FROM perfiles WHERE id_perfil = $1 RETURNING *",
-            [id_perfil]
+            "DELETE FROM perfiles WHERE id_usuario = $1 RETURNING *",
+            [id_usuario]
         );
         return result.rows[0] || null;
     },

@@ -1,3 +1,4 @@
+import { UUID } from "crypto";
 import { PerfilesEnterpriseRepository } from "../../data/repositories/enterprise/perfiles.repository";
 import { CrearPerfilEmpresaDTO, ActualizarPerfilEmpresaDTO, PerfilEmpresa } from "../../interfaces/perfil.enterprise.interface";
 import {NotFoundError, BusinessRuleError } from "../../utils/errors";
@@ -34,7 +35,7 @@ export const PerfilesEnterpriseService = {
         return perfiles.map(perfil => this.limpiarRespuesta(perfil));
     },
 
-    async getPerfilById(id: number): Promise<PerfilEmpresa> {
+    async getPerfilById(id: UUID): Promise<PerfilEmpresa> {
         const perfil = await PerfilesEnterpriseRepository.getPerfilById(id);
 
         if (!perfil) {
@@ -46,18 +47,18 @@ export const PerfilesEnterpriseService = {
     },
 
     async actualizarPerfil(
-        id_perfil: number,
+        id_usuario: UUID,
         datos: ActualizarPerfilEmpresaDTO
     ): Promise<PerfilEmpresa> {
         
         // Verificar que el perfil existe
-        await this.getPerfilById(id_perfil);
+        await this.getPerfilById(id_usuario);
 
         // Sanitizar datos
         const datosSanitizados = this.sanitizarDatosActualizacion(datos);
 
         const perfilActualizado = await PerfilesEnterpriseRepository.actualizarPerfil(
-            id_perfil,
+            id_usuario,
             datosSanitizados.nombre,
             datosSanitizados.biografia,
             datosSanitizados.telefono,
@@ -70,22 +71,22 @@ export const PerfilesEnterpriseService = {
         );
 
         if (!perfilActualizado) {
-            throw new NotFoundError(`No se pudo actualizar el perfil con ID ${id_perfil}`);
+            throw new NotFoundError(`No se pudo actualizar el perfil con ID ${id_usuario}`);
         }
 
         // Limpiar y retornar
         return this.limpiarRespuesta(perfilActualizado);
     },
 
-    async eliminarPerfil(id_perfil: number): Promise<PerfilEmpresa> {
+    async eliminarPerfil(id_usuario: UUID): Promise<PerfilEmpresa> {
 
         // Verificar que el perfil existe
-        await this.getPerfilById(id_perfil);
+        await this.getPerfilById(id_usuario);
 
-        const perfilEliminado = await PerfilesEnterpriseRepository.eliminarPerfil(id_perfil);
+        const perfilEliminado = await PerfilesEnterpriseRepository.eliminarPerfil(id_usuario);
 
         if (!perfilEliminado) {
-            throw new NotFoundError(`No se pudo eliminar el perfil con ID ${id_perfil}`);
+            throw new NotFoundError(`No se pudo eliminar el perfil con ID ${id_usuario}`);
         }
 
         // Limpiar y retornar
