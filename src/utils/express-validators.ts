@@ -15,16 +15,12 @@ export class ExpressValidators {
       body("nombre")
         .optional()
         .isLength({ min: 2, max: 100 })
-        .withMessage("El nombre debe tener entre 2 y 100 caracteres")
-        .trim(),
-
+        .withMessage("El nombre debe tener entre 2 y 100 caracteres"),
       // biografia es opcional pero si se proporciona debe ser válida
       body("biografia")
         .optional()
         .isLength({ min: 10, max: 1000 })
-        .withMessage("La biografía debe tener entre 10 y 1000 caracteres")
-        .trim(),
-
+        .withMessage("La biografía debe tener entre 10 y 1000 caracteres"),
       // telefono es opcional pero si se proporciona debe ser válido
       body("telefono")
         .optional()
@@ -33,9 +29,7 @@ export class ExpressValidators {
             throw new Error("El formato del teléfono no es válido");
           }
           return true;
-        })
-        .trim(),
-
+        }),
       // email es opcional pero si se proporciona debe ser válido
       body("email")
         .optional()
@@ -63,9 +57,7 @@ export class ExpressValidators {
       body("ubicacion")
         .optional()
         .isLength({ min: 2, max: 100 })
-        .withMessage("La ubicación debe tener entre 2 y 100 caracteres")
-        .trim(),
-
+        .withMessage("La ubicación debe tener entre 2 y 100 caracteres"),
       // pagina_web es opcional pero si se proporciona debe ser URL válida
       body("pagina_web")
         .optional({ values: "falsy" })
@@ -79,7 +71,7 @@ export class ExpressValidators {
         .withMessage("La URL de la foto de perfil no es válida"),
 
       // red_social es opcional
-      body("red_social").optional({ values: "falsy" }).trim(),
+      body("red_social").optional({ values: "falsy" }),
     ];
   }
 
@@ -95,15 +87,11 @@ export class ExpressValidators {
       body("nombre")
         .optional()
         .isLength({ min: 2, max: 100 })
-        .withMessage("El nombre debe tener entre 2 y 100 caracteres")
-        .trim(),
-
+        .withMessage("El nombre debe tener entre 2 y 100 caracteres"),
       body("biografia")
         .optional()
         .isLength({ min: 10, max: 1000 })
-        .withMessage("La biografía debe tener entre 10 y 1000 caracteres")
-        .trim(),
-
+        .withMessage("La biografía debe tener entre 10 y 1000 caracteres"),
       body("telefono")
         .optional()
         .custom((value) => {
@@ -111,9 +99,7 @@ export class ExpressValidators {
             throw new Error("El formato del teléfono no es válido");
           }
           return true;
-        })
-        .trim(),
-
+        }),
       body("email")
         .optional()
         .isEmail()
@@ -138,9 +124,7 @@ export class ExpressValidators {
       body("ubicacion")
         .optional()
         .isLength({ min: 2, max: 100 })
-        .withMessage("La ubicación debe tener entre 2 y 100 caracteres")
-        .trim(),
-
+        .withMessage("La ubicación debe tener entre 2 y 100 caracteres"),
       body("pagina_web")
         .optional({ values: "falsy" })
         .isURL()
@@ -151,7 +135,7 @@ export class ExpressValidators {
         .isURL()
         .withMessage("La URL de la foto de perfil no es válida"),
 
-      body("red_social").optional({ values: "falsy" }).trim(),
+      body("red_social").optional({ values: "falsy" }),
     ];
   }
 
@@ -164,15 +148,12 @@ export class ExpressValidators {
         .isLength({ min: 2, max: 100 })
         .withMessage(
           "El nombre de la categoría debe tener entre 2 y 100 caracteres"
-        )
-        .trim(),
-
+        ),
       body("descripcion")
         .notEmpty()
         .withMessage("La descripción es requerida")
         .isLength({ min: 10, max: 500 })
-        .withMessage("La descripción debe tener entre 10 y 500 caracteres")
-        .trim(),
+        .withMessage("La descripción debe tener entre 10 y 500 caracteres"),
     ];
   }
 
@@ -189,15 +170,12 @@ export class ExpressValidators {
         .isLength({ min: 2, max: 100 })
         .withMessage(
           "El nombre de la categoría debe tener entre 2 y 100 caracteres"
-        )
-        .trim(),
-
+        ),
       body("descripcion")
         .notEmpty()
         .withMessage("La descripción es requerida")
         .isLength({ min: 10, max: 500 })
-        .withMessage("La descripción debe tener entre 10 y 500 caracteres")
-        .trim(),
+        .withMessage("La descripción debe tener entre 10 y 500 caracteres"),
     ];
   }
 
@@ -213,15 +191,13 @@ export class ExpressValidators {
         .notEmpty()
         .withMessage("El nombre es requerido")
         .isLength({ min: 2, max: 100 })
-        .withMessage("El nombre debe tener entre 2 y 100 caracteres")
-        .trim(),
+        .withMessage("El nombre debe tener entre 2 y 100 caracteres"),
 
       body("biografia")
         .notEmpty()
         .withMessage("La biografía es requerida")
         .isLength({ min: 10, max: 1000 })
-        .withMessage("La biografía debe tener entre 10 y 1000 caracteres")
-        .trim(),
+        .withMessage("La biografía debe tener entre 10 y 1000 caracteres"),
 
       body("telefono")
         .notEmpty()
@@ -231,9 +207,7 @@ export class ExpressValidators {
             throw new Error("El formato del teléfono no es válido");
           }
           return true;
-        })
-        .trim(),
-
+        }),
       body("fecha_nacimiento_fundacion")
         .notEmpty()
         .withMessage("La fecha de nacimiento es requerida")
@@ -269,8 +243,7 @@ export class ExpressValidators {
         .notEmpty()
         .withMessage("La ubicación es requerida")
         .isLength({ min: 2, max: 100 })
-        .withMessage("La ubicación debe tener entre 2 y 100 caracteres")
-        .trim(),
+        .withMessage("La ubicación debe tener entre 2 y 100 caracteres"),
 
       body("pagina_web")
         .optional({ values: "falsy" })
@@ -282,7 +255,7 @@ export class ExpressValidators {
         .isURL()
         .withMessage("La URL de la foto de perfil no es válida"),
 
-      body("red_social").optional({ values: "falsy" }).trim(),
+      body("red_social").optional({ values: "falsy" }),
     ];
   }
 
@@ -292,6 +265,34 @@ export class ExpressValidators {
       param("id")
         .isInt({ min: 1 })
         .withMessage("El ID debe ser un número positivo"),
+    ];
+  }
+
+  static insertarCurriculum(): ValidationChain[] {
+    return [
+      body("id_perfil")
+        .isInt({ min: 1 })
+        .withMessage("El ID del perfil debe ser un número positivo"),
+
+      body("url_curriculum")
+        .isURL()
+        .withMessage("La URL del currículum no es válida"),
+    ];
+  }
+
+  static actualizarCurriculum(): ValidationChain[] {
+    return [
+      param("id")
+        .isInt({ min: 1 })
+        .withMessage("El ID del currículum debe ser un número positivo"),
+
+      body("id_perfil")
+        .isInt({ min: 1 })
+        .withMessage("El ID del perfil debe ser un número positivo"),
+
+      body("url_curriculum")
+        .isURL()
+        .withMessage("La URL del currículum no es válida"),
     ];
   }
 }
