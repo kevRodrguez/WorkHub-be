@@ -99,6 +99,7 @@ export const PerfilesEnterpriseController = {
   async actualizarPerfil(req: Request, res: Response) {
     try {
       const id = req.params.id as UUID;
+
       const datos: ActualizarPerfilEmpresaDTO = {
         ...req.body,
         fecha_nacimiento_fundacion: req.body.fecha_nacimiento_fundacion
