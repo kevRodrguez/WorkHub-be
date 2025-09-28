@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { PerfilEnterpriseRoutes } from "./perfiles/perfiles.routes";
+import { TrabajosRoutes } from "../shared/trabajos/trabajos.routes";
 
 
 export class EnterpriseRoutes {

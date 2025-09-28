@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { CandidateRoutes } from "./candidate/routes";
 import { EnterpriseRoutes } from "./enterprise/routes";
+import { TrabajosRoutes } from "./shared/trabajos/trabajos.routes";
 
 export class AppRoutes {
   static get routes(): Router {
@@ -13,6 +14,7 @@ export class AppRoutes {
 
     // Rutas de la empresa
     router.use("/api/enterprise", EnterpriseRoutes.routes);
+    router.use("/api/trabajos", TrabajosRoutes.routes)
 
     return router;
   }
