@@ -9,6 +9,7 @@ export const AplicacionesEnterpriseRepository = {
     const query = `
       SELECT 
         p.id_perfil,
+        ap.id_aplicacion,
         ap.id_trabajo,
         p.nombre,
         p.id_usuario,
