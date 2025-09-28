@@ -22,7 +22,13 @@ export const AplicacionesEnterpriseController = {
 
     try {
 
-      const aplicaciones = await AplicacionesEnterpriseService.getAplicacionesByIdTrabajo(parseInt(id_trabajo));
+      let aplicaciones = await AplicacionesEnterpriseService.getAplicacionesByIdTrabajo(parseInt(id_trabajo));
+      aplicaciones = aplicaciones.map(app => {
+        return {
+          ...app,
+          fotoUrl: `https://pzplniihhetjlxdkhljz.supabase.co/storage/v1/object/public/Archivos_WorkHub/${app.id_usuario}/avatar.png`
+        }
+      })
       res.status(200).json({
         success: true,
         data: aplicaciones,

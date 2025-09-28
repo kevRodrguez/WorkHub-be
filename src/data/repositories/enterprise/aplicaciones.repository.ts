@@ -11,6 +11,7 @@ export const AplicacionesEnterpriseRepository = {
         p.id_perfil,
         ap.id_trabajo,
         p.nombre,
+        p.id_usuario,
         t.nombre_trabajo,
         p.ubicacion,
         p.experiencia,
