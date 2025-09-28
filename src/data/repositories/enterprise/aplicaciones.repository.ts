@@ -40,5 +40,21 @@ export const AplicacionesEnterpriseRepository = {
     return result.rows;
   },
 
+  async updateEstadoAplicacion(id_aplicacion: number, nuevo_estado: string): Promise<any[]> {
+    console.log("ID Trabajo en el repositorio:", id_aplicacion); // Verifica que el ID se recibe correctamente
+    const query = `
+      UPDATE aplicaciones
+      SET estado = $1
+      WHERE id_aplicacion = $2
+      RETURNING *;
+    `;
+    const result = await pool.query(query, [nuevo_estado, id_aplicacion]);
+
+    if (!result.rows || result.rows.length === 0) {
+      throw new CustomError(404, "No se encontraró la aplicacion para este trabajo");
+    }
+    return result.rows;
+  },
+
 
 };

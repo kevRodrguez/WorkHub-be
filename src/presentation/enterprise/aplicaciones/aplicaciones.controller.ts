@@ -39,4 +39,23 @@ export const AplicacionesEnterpriseController = {
     }
   },
 
+
+  async updateEstadoAplicacion(req: Request, res: Response, next: NextFunction) {
+    const { id_aplicacion } = req.params;
+    const { nuevo_estado } = req.body;
+    console.log(id_aplicacion, nuevo_estado)
+
+    try {
+
+      const aplicacionActualizada = await AplicacionesEnterpriseService.updateEstadoAplicacion(parseInt(id_aplicacion), nuevo_estado);
+      res.status(200).json({
+        success: true,
+        data: aplicacionActualizada,
+        message: "Estado de la aplicación actualizado exitosamente",
+      })
+    } catch (error) {
+      return next(error);
+    }
+  },
+
 };
