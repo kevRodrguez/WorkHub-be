@@ -28,21 +28,5 @@ export const TrabajosController = {
     }
   },
 
-  async getPerfiles(req: Request, res: Response) {
-    try {
-      const perfiles = await PerfilesEnterpriseService.getPerfiles();
-      res.json({
-        success: true,
-        data: perfiles,
-        message: "Perfiles de empresa obtenidos exitosamente",
-      });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        message: "Error interno del servidor",
-        error: (error as Error).message,
-      });
-    }
-  },
 
 };
