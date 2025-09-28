@@ -18,7 +18,11 @@ export const TrabajosController = {
     const { perfil_id } = req.params;
     try {
       const trabajos = await TrabajosService.getTrabajosByPerfilId(parseInt(perfil_id))
-      res.json(trabajos)
+      res.json({
+        success: true,
+        data: trabajos,
+        message: "Trabajos obtenidos exitosamente",
+      })
     } catch (error) {
       return next(error);
     }
