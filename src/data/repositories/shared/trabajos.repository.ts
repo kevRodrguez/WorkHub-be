@@ -1,20 +1,3 @@
-/*
-Tabla trabajos en la database
-id_trabajo (PK)
-id_perfil (FK) (empresa)
-id_categoria (FK)
-nombre_trabajo
-descripcion
-requisitos
-salario_minimo
-salario_maximo
-modalidad (presencial, remoto, híbrido)
-educacion
-experiencia
-fecha_expiracion
-ubicacion
-*/
-
 import { pool } from "../../../config/db";
 import { CustomError } from "../../../utils/CustomError";
 import { Trabajo } from "../../../interfaces";

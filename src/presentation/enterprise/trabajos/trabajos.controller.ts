@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import {
   CrearTrabajoDTO,
   ActualizarTrabajoDTO,
-  Trabajo,
 } from "../../../interfaces/trabajos.interface";
 import { TrabajosService } from "../../../services/enterprise/trabajos.service";
 import {

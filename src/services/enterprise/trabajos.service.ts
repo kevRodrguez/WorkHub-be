@@ -1,11 +1,9 @@
-import { UUID } from "crypto";
 import { TrabajosRepository } from "../../data/repositories/enterprise/trabajos.repository";
 import {
   CrearTrabajoDTO,
   ActualizarTrabajoDTO,
-  Trabajo,
 } from "../../interfaces/trabajos.interface";
-import { NotFoundError, BusinessRuleError } from "../../utils/errors";
+import { BusinessRuleError } from "../../utils/errors";
 
 export const TrabajosService = {
   async insertarTrabajo(data: CrearTrabajoDTO): Promise<CrearTrabajoDTO> {
