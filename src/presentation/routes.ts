@@ -1,23 +1,19 @@
-import { Router } from 'express';
-
-
-
+import { Router } from "express";
+import { CandidateRoutes } from "./candidate/routes";
+import { EnterpriseRoutes } from "./enterprise/routes";
 
 export class AppRoutes {
-
-
   static get routes(): Router {
-
     const router = Router();
-    
+
     // Definir las rutas
-    // router.use('/api/todos', /*TodoRoutes.routes */ );
 
+    // Rutas del candidato
+    router.use("/api/candidate", CandidateRoutes.routes);
 
+    // Rutas de la empresa
+    router.use("/api/enterprise", EnterpriseRoutes.routes);
 
     return router;
   }
-
-
 }
-
