@@ -4,5 +4,6 @@
 // import { Usuario } from './interfaces/usuario.interface';
 
 export * from "./categoria.interface";
+export * from "./curriculum.interface";
 export * from "./perfil.candidate.interface";
 export * from "./perfil.enterprise.interface";
