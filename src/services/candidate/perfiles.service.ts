@@ -8,12 +8,12 @@ export const PerfilesCandidateService = {
     const perfiles = await PerfilesRepository.getPerfiles();
 
     // Aplicar transformaciones si es necesario
-    return perfiles.map(perfil => ({
+    return perfiles.map((perfil) => ({
       ...perfil,
       nombre: perfil.nombre.trim(),
       biografia: perfil.biografia.trim(),
       telefono: perfil.telefono.trim(),
-      ubicacion: perfil.ubicacion.trim()
+      ubicacion: perfil.ubicacion.trim(),
     }));
   },
 
@@ -34,8 +34,13 @@ export const PerfilesCandidateService = {
     await this.validarUsuarioUnico(datos.id_usuario);
 
     // Validar que sea mayor de edad (validación de negocio específica)
-    if (datos.fecha_nacimiento_fundacion && !Validators.isAdult(datos.fecha_nacimiento_fundacion)) {
-      throw new BusinessRuleError("El candidato debe ser mayor de edad (18 años)");
+    if (
+      datos.fecha_nacimiento_fundacion &&
+      !Validators.isAdult(datos.fecha_nacimiento_fundacion)
+    ) {
+      throw new BusinessRuleError(
+        "El candidato debe ser mayor de edad (18 años)"
+      );
     }
 
     // Sanitizar datos (express-validator ya sanitiza los básicos)
@@ -66,8 +71,13 @@ export const PerfilesCandidateService = {
     await this.getPerfilById(id_perfil);
 
     // Validar mayor de edad si se proporciona fecha de nacimiento
-    if (datos.fecha_nacimiento_fundacion && !Validators.isAdult(datos.fecha_nacimiento_fundacion)) {
-      throw new BusinessRuleError("El candidato debe ser mayor de edad (18 años)");
+    if (
+      datos.fecha_nacimiento_fundacion &&
+      !Validators.isAdult(datos.fecha_nacimiento_fundacion)
+    ) {
+      throw new BusinessRuleError(
+        "El candidato debe ser mayor de edad (18 años)"
+      );
     }
 
     // Sanitizar datos
@@ -88,7 +98,9 @@ export const PerfilesCandidateService = {
     );
 
     if (!perfilActualizado) {
-      throw new NotFoundError(`No se pudo actualizar el perfil con ID ${id_perfil}`);
+      throw new NotFoundError(
+        `No se pudo actualizar el perfil con ID ${id_perfil}`
+      );
     }
 
     return perfilActualizado;
@@ -103,7 +115,9 @@ export const PerfilesCandidateService = {
     const perfilEliminado = await PerfilesRepository.eliminarPerfil(id_perfil);
 
     if (!perfilEliminado) {
-      throw new NotFoundError(`No se pudo eliminar el perfil con ID ${id_perfil}`);
+      throw new NotFoundError(
+        `No se pudo eliminar el perfil con ID ${id_perfil}`
+      );
     }
 
     return perfilEliminado;
@@ -113,10 +127,14 @@ export const PerfilesCandidateService = {
   async validarUsuarioUnico(id_usuario: number): Promise<void> {
     const perfiles = await PerfilesRepository.getPerfiles();
 
-    const usuarioExiste = perfiles.some(perfil => perfil.id_usuario === id_usuario);
+    const usuarioExiste = perfiles.some(
+      (perfil) => perfil.id_usuario === id_usuario
+    );
 
     if (usuarioExiste) {
-      throw new BusinessRuleError(`Ya existe un perfil para el usuario con ID ${id_usuario}`);
+      throw new BusinessRuleError(
+        `Ya existe un perfil para el usuario con ID ${id_usuario}`
+      );
     }
   },
 
@@ -124,30 +142,32 @@ export const PerfilesCandidateService = {
   sanitizarDatosPerfil(datos: CrearPerfilDTO): CrearPerfilDTO {
     return {
       ...datos,
-      nombre: datos.nombre?.trim() || '',
-      biografia: datos.biografia?.trim() || '',
-      telefono: datos.telefono?.trim() || '',
-      ubicacion: datos.ubicacion?.trim() || '',
-      genero: datos.genero?.toLowerCase() || '',
-      estado_civil: datos.estado_civil?.toLowerCase() || '',
-      pagina_web: datos.pagina_web || '',
-      red_social: datos.red_social || '',
-      link_foto_perfil: datos.link_foto_perfil || ''
+      nombre: datos.nombre?.trim() || "",
+      biografia: datos.biografia?.trim() || "",
+      telefono: datos.telefono?.trim() || "",
+      ubicacion: datos.ubicacion?.trim() || "",
+      genero: datos.genero?.toLowerCase() || "",
+      estado_civil: datos.estado_civil?.toLowerCase() || "",
+      pagina_web: datos.pagina_web || "",
+      red_social: datos.red_social || "",
+      link_foto_perfil: datos.link_foto_perfil || "",
     };
   },
 
-  sanitizarDatosActualizacionPerfil(datos: ActualizarPerfilDTO): ActualizarPerfilDTO {
+  sanitizarDatosActualizacionPerfil(
+    datos: ActualizarPerfilDTO
+  ): ActualizarPerfilDTO {
     return {
       ...datos,
-      nombre: datos.nombre?.trim() || '',
-      biografia: datos.biografia?.trim() || '',
-      telefono: datos.telefono?.trim() || '',
-      ubicacion: datos.ubicacion?.trim() || '',
-      genero: datos.genero?.toLowerCase() || '',
-      estado_civil: datos.estado_civil?.toLowerCase() || '',
-      pagina_web: datos.pagina_web || '',
-      red_social: datos.red_social || '',
-      link_foto_perfil: datos.link_foto_perfil || ''
+      nombre: datos.nombre?.trim() || "",
+      biografia: datos.biografia?.trim() || "",
+      telefono: datos.telefono?.trim() || "",
+      ubicacion: datos.ubicacion?.trim() || "",
+      genero: datos.genero?.toLowerCase() || "",
+      estado_civil: datos.estado_civil?.toLowerCase() || "",
+      pagina_web: datos.pagina_web || "",
+      red_social: datos.red_social || "",
+      link_foto_perfil: datos.link_foto_perfil || "",
     };
-  }
+  },
 };

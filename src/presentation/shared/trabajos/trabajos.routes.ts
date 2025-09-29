@@ -10,7 +10,12 @@ export class TrabajosRoutes {
   static get routes(): Router {
     const router = Router();
 
-    router.get('/:perfil_id', runValidations(getTrabajoByIdValidator), TrabajosController.getTrabajos)
+    router.get("/", TrabajosController.getTrabajos);
+    router.get(
+      "/:id_perfil",
+      runValidations(getTrabajoByIdValidator),
+      TrabajosController.getTrabajosByPerfilId
+    );
 
     return router;
   }
