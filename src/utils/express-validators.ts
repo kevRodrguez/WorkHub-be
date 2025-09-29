@@ -80,8 +80,9 @@ export class ExpressValidators {
     return [
       // Validar ID en los parámetros
       param("id")
-        .isInt({ min: 1 })
-        .withMessage("El ID del perfil debe ser un número positivo"),
+        .notEmpty()
+        .isUUID()
+        .withMessage("El ID del perfil debe ser un UUID válido"),
 
       // Todos los campos son opcionales para actualización
       body("nombre")

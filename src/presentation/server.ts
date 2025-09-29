@@ -1,6 +1,7 @@
 import express, { Router } from "express";
 import path from "path";
 import cors from "cors";
+import { errorHandler } from "../middlewares/errorsHandler";
 
 interface Options {
   port: number;
@@ -26,11 +27,10 @@ export class Server {
     //* Middlewares
     this.app.use(express.json()); // raw
     this.app.use(express.urlencoded({ extended: true })); // x-www-form-urlencoded
-
     // CORS
     this.app.use(
       cors({
-        origin: ["http://localhost:4000"],
+        origin: ["http://localhost:4000", "http://localhost:3000", "http://localhost:3001"],
       })
     );
 
@@ -48,6 +48,7 @@ export class Server {
       res.sendFile(indexPath);
     });
 
+    this.app.use(errorHandler);
     this.serverListener = this.app.listen(this.port, () => {
       console.log(`Server running on port ${this.port}`);
     });
