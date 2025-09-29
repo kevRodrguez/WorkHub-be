@@ -7,3 +7,4 @@ export * from "./categoria.interface";
 export * from "./curriculum.interface";
 export * from "./perfil.candidate.interface";
 export * from "./perfil.enterprise.interface";
+export * from "./trabajos.interface";

@@ -14,7 +14,9 @@ export class AppRoutes {
 
     // Rutas de la empresa
     router.use("/api/enterprise", EnterpriseRoutes.routes);
-    router.use("/api/trabajos", TrabajosRoutes.routes)
+
+    // Rutas compartidas
+    router.use("/api/trabajos", TrabajosRoutes.routes);
 
     return router;
   }
