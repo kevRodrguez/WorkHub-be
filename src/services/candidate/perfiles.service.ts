@@ -1,3 +1,4 @@
+import { UUID } from "crypto";
 import { PerfilesRepository } from "../../data/repositories/candidate/perfiles.repository";
 import { ActualizarPerfilDTO, CrearPerfilDTO, Perfil } from "../../interfaces";
 import { NotFoundError, BusinessRuleError } from "../../utils/errors";
@@ -17,7 +18,7 @@ export const PerfilesCandidateService = {
     }));
   },
 
-  async getPerfilById(id: number): Promise<Perfil> {
+  async getPerfilById(id: UUID): Promise<Perfil> {
     // express-validator ya validó que id sea positivo
     const perfil = await PerfilesRepository.getPerfilById(id);
 
@@ -49,26 +50,31 @@ export const PerfilesCandidateService = {
     return await PerfilesRepository.insertarPerfil(
       datosSanitizados.id_usuario,
       datosSanitizados.nombre,
-      datosSanitizados.biografia,
-      datosSanitizados.telefono,
-      datosSanitizados.link_foto_perfil,
-      datosSanitizados.fecha_nacimiento_fundacion,
       datosSanitizados.genero,
       datosSanitizados.estado_civil,
+      datosSanitizados.experiencia,
+      datosSanitizados.educacion,
+      datosSanitizados.biografia,
+      datosSanitizados.fecha_nacimiento_fundacion,
+      datosSanitizados.telefono,
       datosSanitizados.ubicacion,
+      datosSanitizados.email,
       datosSanitizados.pagina_web,
-      datosSanitizados.red_social
+      datosSanitizados.red_social,
+      datosSanitizados.rol,
+      datosSanitizados.link_foto_perfil,
+
     );
   },
 
   async actualizarPerfil(
-    id_perfil: number,
+    id_usuario: UUID,
     datos: ActualizarPerfilDTO
   ): Promise<Perfil> {
-    // express-validator ya validó que id_perfil sea positivo y los datos básicos
+    // express-validator ya validó que id_usuario sea válido y los datos básicos
 
     // Verificar que el perfil existe
-    await this.getPerfilById(id_perfil);
+    await this.getPerfilById(id_usuario);
 
     // Validar mayor de edad si se proporciona fecha de nacimiento
     if (
@@ -84,39 +90,43 @@ export const PerfilesCandidateService = {
     const datosSanitizados = this.sanitizarDatosActualizacionPerfil(datos);
 
     const perfilActualizado = await PerfilesRepository.actualizarPerfil(
-      id_perfil,
+      id_usuario,
       datosSanitizados.nombre,
-      datosSanitizados.biografia,
-      datosSanitizados.telefono,
-      datosSanitizados.link_foto_perfil,
-      datosSanitizados.fecha_nacimiento_fundacion,
       datosSanitizados.genero,
       datosSanitizados.estado_civil,
+      datosSanitizados.experiencia,
+      datosSanitizados.educacion,
+      datosSanitizados.biografia,
+      datosSanitizados.fecha_nacimiento_fundacion,
+      datosSanitizados.telefono,
       datosSanitizados.ubicacion,
+      datosSanitizados.email,
       datosSanitizados.pagina_web,
-      datosSanitizados.red_social
+      datosSanitizados.red_social,
+      datosSanitizados.rol,
+      datosSanitizados.link_foto_perfil,
     );
 
     if (!perfilActualizado) {
       throw new NotFoundError(
-        `No se pudo actualizar el perfil con ID ${id_perfil}`
+        `No se pudo actualizar el perfil con ID ${id_usuario}`
       );
     }
 
     return perfilActualizado;
   },
 
-  async eliminarPerfil(id_perfil: number): Promise<Perfil> {
-    // express-validator ya validó que id_perfil sea positivo
+  async eliminarPerfil(id_usuario: UUID): Promise<Perfil> {
+    // express-validator ya validó que id_usuario sea válido
 
     // Verificar que el perfil existe
-    await this.getPerfilById(id_perfil);
+    await this.getPerfilById(id_usuario);
 
-    const perfilEliminado = await PerfilesRepository.eliminarPerfil(id_perfil);
+    const perfilEliminado = await PerfilesRepository.eliminarPerfil(id_usuario);
 
     if (!perfilEliminado) {
       throw new NotFoundError(
-        `No se pudo eliminar el perfil con ID ${id_perfil}`
+        `No se pudo eliminar el perfil con ID ${id_usuario}`
       );
     }
 
@@ -143,14 +153,19 @@ export const PerfilesCandidateService = {
     return {
       ...datos,
       nombre: datos.nombre?.trim() || "",
-      biografia: datos.biografia?.trim() || "",
-      telefono: datos.telefono?.trim() || "",
-      ubicacion: datos.ubicacion?.trim() || "",
       genero: datos.genero?.toLowerCase() || "",
       estado_civil: datos.estado_civil?.toLowerCase() || "",
+      experiencia: datos.experiencia?.toLowerCase() || "",
+      educacion: datos.educacion?.toLowerCase() || "",
+      biografia: datos.biografia?.toLowerCase() || "",
+      telefono: datos.telefono?.trim() || "",
+      email: datos.email?.toLowerCase() || "",
       pagina_web: datos.pagina_web || "",
       red_social: datos.red_social || "",
+      ubicacion: datos.ubicacion?.toLowerCase() || "",
+      rol: datos.rol?.toLowerCase() || "",
       link_foto_perfil: datos.link_foto_perfil || "",
+
     };
   },
 
@@ -160,13 +175,17 @@ export const PerfilesCandidateService = {
     return {
       ...datos,
       nombre: datos.nombre?.trim() || "",
-      biografia: datos.biografia?.trim() || "",
-      telefono: datos.telefono?.trim() || "",
-      ubicacion: datos.ubicacion?.trim() || "",
       genero: datos.genero?.toLowerCase() || "",
       estado_civil: datos.estado_civil?.toLowerCase() || "",
+      experiencia: datos.experiencia?.toLowerCase() || "",
+      educacion: datos.educacion?.toLowerCase() || "",
+      biografia: datos.biografia?.toLowerCase() || "",
+      telefono: datos.telefono?.trim() || "",
+      ubicacion: datos.ubicacion?.toLowerCase() || "",
+      email: datos.email?.toLowerCase() || "",
       pagina_web: datos.pagina_web || "",
       red_social: datos.red_social || "",
+      rol: datos.rol?.toLowerCase() || "",
       link_foto_perfil: datos.link_foto_perfil || "",
     };
   },

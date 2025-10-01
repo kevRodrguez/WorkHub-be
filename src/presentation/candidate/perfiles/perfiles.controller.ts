@@ -9,6 +9,7 @@ import {
   NotFoundError,
   BusinessRuleError,
 } from "../../../utils/errors";
+import { UUID } from "crypto";
 
 export const PerfilesCandidateController = {
   async getPerfiles(req: Request, res: Response) {
@@ -30,7 +31,7 @@ export const PerfilesCandidateController = {
 
   async getPerfilById(req: Request, res: Response) {
     try {
-      const id = parseInt(req.params.id, 10);
+      const id = req.params.id as UUID;
       const perfil = await PerfilesCandidateService.getPerfilById(id);
 
       res.json({
@@ -67,6 +68,7 @@ export const PerfilesCandidateController = {
         fecha_nacimiento_fundacion: new Date(
           req.body.fecha_nacimiento_fundacion
         ),
+        rol: 'candidato',
       };
 
       const nuevoPerfil = await PerfilesCandidateService.insertarPerfil(datos);
@@ -100,12 +102,13 @@ export const PerfilesCandidateController = {
 
   async actualizarPerfil(req: Request, res: Response) {
     try {
-      const id = parseInt(req.params.id, 10);
+      const id = req.params.id as UUID;
       const datos: ActualizarPerfilDTO = {
         ...req.body,
         fecha_nacimiento_fundacion: new Date(
           req.body.fecha_nacimiento_fundacion
         ),
+        rol: 'candidato',
       };
 
       const perfilActualizado = await PerfilesCandidateService.actualizarPerfil(
@@ -147,7 +150,7 @@ export const PerfilesCandidateController = {
 
   async eliminarPerfil(req: Request, res: Response) {
     try {
-      const id = parseInt(req.params.id, 10);
+      const id = req.params.id as UUID;
       const perfilEliminado = await PerfilesCandidateService.eliminarPerfil(id);
 
       res.json({

@@ -11,7 +11,6 @@ export class PerfilCandidateRoutes {
 
     router.get(
       "/:id",
-      ExpressValidators.validarIdParametro(),
       handleValidationErrors,
       PerfilesCandidateController.getPerfilById
     );
@@ -21,6 +20,19 @@ export class PerfilCandidateRoutes {
       ExpressValidators.crearPerfilCandidato(),
       handleValidationErrors,
       PerfilesCandidateController.insertarPerfil
+    );
+
+    router.put(
+      "/:id",
+      ExpressValidators.actualizarPerfilCandidato(),
+      handleValidationErrors,
+      PerfilesCandidateController.actualizarPerfil
+    );
+
+    router.delete(
+      "/:id",
+      handleValidationErrors,
+      PerfilesCandidateController.eliminarPerfil
     );
 
     return router;

@@ -1,3 +1,4 @@
+import { UUID } from "crypto";
 import { pool } from "../../../config/db";
 import { Perfil } from "../../../interfaces";
 
@@ -10,9 +11,9 @@ export const PerfilesRepository = {
     return result.rows;
   },
 
-  async getPerfilById(id: number): Promise<Perfil | null> {
+  async getPerfilById(id: UUID): Promise<Perfil | null> {
     const result = await pool.query(
-      "SELECT * FROM perfiles WHERE id_perfil = $1",
+      "SELECT * FROM perfiles WHERE id_usuario = $1",
       [id]
     );
 
@@ -22,32 +23,40 @@ export const PerfilesRepository = {
   async insertarPerfil(
     id_usuario: number,
     nombre: string,
-    biografia: string,
-    telefono: string,
-    link_foto_perfil: string,
-    fecha_nacimiento_fundacion: Date,
     genero: string,
     estado_civil: string,
+    experiencia: string,
+    educacion: string,
+    biografia: string,
+    fecha_nacimiento_fundacion: Date,
+    telefono: string,
     ubicacion: string,
+    email: string,
     pagina_web: string,
-    red_social: string
+    red_social: string,
+    rol: string,
+    link_foto_perfil: string,
   ): Promise<Perfil> {
     const result = await pool.query(
       `INSERT INTO perfiles 
-      (id_usuario, nombre, biografia, telefono, link_foto_perfil, fecha_nacimiento_fundacion, genero, estado_civil, ubicacion, pagina_web, red_social)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`,
+      (id_usuario, nombre, genero, estado_civil, experiencia, educacion, biografia, fecha_nacimiento_fundacion, telefono, ubicacion, email, pagina_web, red_social, rol, link_foto_perfil)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) RETURNING *`,
       [
         id_usuario,
         nombre,
-        biografia,
-        telefono,
-        link_foto_perfil,
-        fecha_nacimiento_fundacion,
         genero,
         estado_civil,
+        experiencia,
+        educacion,
+        biografia,
+        fecha_nacimiento_fundacion,
+        telefono,
         ubicacion,
+        email,
         pagina_web,
         red_social,
+        rol,
+        link_foto_perfil,
       ]
     );
 
@@ -55,44 +64,52 @@ export const PerfilesRepository = {
   },
 
   async actualizarPerfil(
-    id_perfil: number,
+    id_usuario: UUID,
     nombre: string,
-    biografia: string,
-    telefono: string,
-    link_foto_perfil: string,
-    fecha_nacimiento_fundacion: Date,
     genero: string,
     estado_civil: string,
+    experiencia: string,
+    educacion: string,
+    biografia: string,
+    fecha_nacimiento_fundacion: Date,
+    telefono: string,
     ubicacion: string,
+    email: string,
     pagina_web: string,
-    red_social: string
+    red_social: string,
+    rol: string,
+    link_foto_perfil: string,
   ): Promise<Perfil | null> {
     const result = await pool.query(
       `UPDATE perfiles SET 
-      nombre = $1, biografia = $2, telefono = $3, link_foto_perfil = $4, fecha_nacimiento_fundacion = $5, genero = $6, estado_civil = $7, ubicacion = $8, pagina_web = $9, red_social = $10
-      WHERE id_perfil = $11 RETURNING *`,
+      nombre = $1, genero = $2, estado_civil = $3, experiencia = $4, educacion = $5, biografia = $6, fecha_nacimiento_fundacion = $7, telefono = $8, ubicacion = $9, email = $10, pagina_web = $11, red_social = $12, rol = $13, link_foto_perfil = $14
+      WHERE id_usuario = $15 RETURNING *`,
       [
         nombre,
-        biografia,
-        telefono,
-        link_foto_perfil,
-        fecha_nacimiento_fundacion,
         genero,
         estado_civil,
+        experiencia,
+        educacion,
+        biografia,
+        fecha_nacimiento_fundacion,
+        telefono,
         ubicacion,
+        email,
         pagina_web,
         red_social,
-        id_perfil,
+        rol,
+        link_foto_perfil,
+        id_usuario,
       ]
     );
 
     return result.rows[0] || null;
   },
 
-  async eliminarPerfil(id_perfil: number): Promise<Perfil | null> {
+  async eliminarPerfil(id_usuario: UUID): Promise<Perfil | null> {
     const result = await pool.query(
-      "DELETE FROM perfiles WHERE id_perfil = $1 RETURNING *",
-      [id_perfil]
+      "DELETE FROM perfiles WHERE id_usuario = $1 RETURNING *",
+      [id_usuario]
     );
 
     return result.rows[0] || null;
