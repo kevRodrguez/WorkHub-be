@@ -6,6 +6,7 @@ Este proyecto sigue una **arquitectura en capas** basada en Node.js + TypeScript
 
 ## 📁 File System en Árbol
 
+```text
 WORKHUB-BE/
 ├── node_modules/
 ├── public/
@@ -57,6 +58,7 @@ WORKHUB-BE/
 │   └── app.ts
 ├── .env
 ├── .env.template
+```
 
 ---
 
