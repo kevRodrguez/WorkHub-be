@@ -10,7 +10,7 @@ export class PerfilCandidateRoutes {
     router.get("/", PerfilesCandidateController.getPerfiles);
 
     router.get(
-      "/:id",
+      "/:id", 
       handleValidationErrors,
       PerfilesCandidateController.getPerfilById
     );
