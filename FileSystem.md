@@ -88,3 +88,17 @@ La arquitectura está organizada en **capas** para mantener la separación de re
 6. **Middlewares**  
    - Se ejecutan antes o después de los controladores.  
    - Usados para autenticación, validaciones, logging, etc.
+
+---
+
+## 📂 Módulos (Candidate, Enterprise, Shared)
+
+Dentro de las carpetas `repositories`, `services` y `presentation` (controllers/rutas), existen tres módulos principales que organizan la aplicación según los diferentes tipos de usuarios y funcionalidades:
+
+- **Candidate**: Contiene la lógica, rutas y servicios del panel del candidato. Aquí se gestionan funcionalidades como ver empleos, postularse a ofertas, administrar currículums y perfiles personales.
+
+- **Enterprise**: Incluye la lógica, rutas y servicios del panel de la empresa. Permite publicar ofertas de trabajo, gestionar aplicaciones recibidas, revisar perfiles de candidatos y administrar otros recursos relacionados con la empresa.
+
+- **Shared**: Alberga la lógica y endpoints comunes a ambos paneles, como la gestión de trabajos y otros recursos compartidos que son utilizados tanto por candidatos como por empresas.
+
+Esta separación modular facilita mantener un backend organizado, modular y escalable, adaptado al contexto de una bolsa de trabajo con dos tipos de usuarios principales.
