@@ -9,7 +9,7 @@ import {
 export const TrabajosRepository = {
   async insertarTrabajo(trabajo: CrearTrabajoDTO): Promise<CrearTrabajoDTO> {
     const result = await pool.query(
-      "INSERT INTO trabajos (id_perfil, id_categoria, nombre_trabajo, descripcion, responsabilidades, salario_minimo, salario_maximo, modalidad, educacion, experiencia, fecha_expiracion, nivel, ubicacion) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *",
+      "INSERT INTO trabajos (id_perfil, id_categoria, nombre_trabajo, descripcion, responsabilidades, salario_minimo, salario_maximo, modalidad, educacion, experiencia, fecha_expiracion, nivel, ubicacion) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) WHERE estaado=true RETURNING *",
       [
         trabajo.id_perfil,
         trabajo.id_categoria,
@@ -66,7 +66,7 @@ export const TrabajosRepository = {
 
   async eliminarTrabajo(id_trabajo: number): Promise<Trabajo | null> {
     const result = await pool.query(
-      "DELETE FROM trabajos WHERE id_trabajo = $1 RETURNING *",
+      "UPDATE trabajos SET estado = false WHERE id_trabajo = $1 RETURNING *",
       [id_trabajo]
     );
 
