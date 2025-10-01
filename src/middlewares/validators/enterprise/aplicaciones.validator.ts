@@ -8,6 +8,15 @@ export const getAplicacionesByTrabajoIdValidator: ValidationChain[] = [
     .withMessage("El id del trabajo es obligatorio y debe ser numérico"),
 ];
 
+
+export const getAplicacionesByIdEmpresaValidator: ValidationChain[] = [
+  param("id_empresa")
+    .trim()
+    .notEmpty()
+    .isNumeric()
+    .withMessage("El id de la empresa es obligatorio y debe ser numérico"),
+];
+
 export const updateEstadoAplicacionValidator: ValidationChain[] = [
   param("id_aplicacion")
     .trim()

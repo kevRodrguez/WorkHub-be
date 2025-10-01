@@ -31,6 +31,35 @@ export const AplicacionesEnterpriseController = {
     }
   },
 
+  async getAplicacionesByIdEmpresa(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    const { id_empresa } = req.params;
+    console.log(id_empresa);
+
+    try {
+      let aplicaciones =
+        await AplicacionesEnterpriseService.getAplicacionesByIdEmpresa(
+          parseInt(id_empresa)
+        )
+      aplicaciones = aplicaciones.map((app) => {
+        return {
+          ...app,
+          fotoUrl: `https://pzplniihhetjlxdkhljz.supabase.co/storage/v1/object/public/Archivos_WorkHub/${app.id_usuario}/avatar.png`,
+        };
+      });
+      res.status(200).json({
+        success: true,
+        data: aplicaciones,
+        message: "Aplicaciones obtenidas exitosamente",
+      });
+    } catch (error) {
+      return next(error);
+    }
+  },
+
   async updateEstadoAplicacion(
     req: Request,
     res: Response,
