@@ -8,6 +8,14 @@ export const AplicacionesEnterpriseService = {
       );
     return aplicaciones;
   },
+
+  async getAplicacionesByIdEmpresa(id_empresa: number): Promise<any[]> {
+    const aplicaciones =
+      await AplicacionesEnterpriseRepository.getAplicacionesByIdEmpresa(
+        id_empresa
+      );
+    return aplicaciones;
+  },
   async updateEstadoAplicacion(
     id_trabajo: number,
     nuevo_estado: string
