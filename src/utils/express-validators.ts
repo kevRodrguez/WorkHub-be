@@ -12,11 +12,9 @@ export class ExpressValidators {
         .withMessage("El ID de usuario es requerido"),
 
       // nombre es opcional pero si se proporciona debe ser válido
-      body("nombre")
-        .optional(),
+      body("nombre").optional(),
       // biografia es opcional pero si se proporciona debe ser válida
-      body("biografia")
-        .optional(),
+      body("biografia").optional(),
       // telefono es opcional pero si se proporciona debe ser válido
       body("telefono")
         .optional()
@@ -50,8 +48,7 @@ export class ExpressValidators {
         }),
 
       // ubicacion es opcional pero si se proporciona debe ser válida
-      body("ubicacion")
-        .optional(),
+      body("ubicacion").optional(),
       // pagina_web es opcional pero si se proporciona debe ser URL válida
       body("pagina_web")
         .optional({ values: "falsy" })
@@ -79,10 +76,8 @@ export class ExpressValidators {
         .withMessage("El ID del perfil debe ser un UUID válido"),
 
       // Todos los campos son opcionales para actualización
-      body("nombre")
-        .optional(),
-      body("biografia")
-        .optional(),
+      body("nombre").optional(),
+      body("biografia").optional(),
       body("telefono")
         .optional()
         .custom((value) => {
@@ -112,8 +107,7 @@ export class ExpressValidators {
           return true;
         }),
 
-      body("ubicacion")
-        .optional(),
+      body("ubicacion").optional(),
       body("pagina_web")
         .optional({ values: "falsy" })
         .isURL()
@@ -165,6 +159,52 @@ export class ExpressValidators {
         .withMessage("La descripción es requerida")
         .isLength({ min: 10, max: 500 })
         .withMessage("La descripción debe tener entre 10 y 500 caracteres"),
+    ];
+  }
+
+  // Validaciones para actualizar foro
+  static actualizarForo(): ValidationChain[] {
+    return [
+      param("id")
+        .isInt({ min: 1 })
+        .withMessage("El ID del foro debe ser un número positivo"),
+
+      body("titulo")
+        .notEmpty()
+        .withMessage("El del foro es requerido")
+        .isLength({ min: 2, max: 40 })
+        .withMessage("El nombre del foro debe tener entre 2 y 40 caracteres"),
+      body("contenido")
+        .notEmpty()
+        .withMessage("El contenido es requerido")
+        .isLength({ min: 10, max: 500 })
+        .withMessage("El contenido debe tener entre 10 y 500 caracteres"),
+    ];
+  }
+
+  // Validaciones para crear foro
+  static crearForo(): ValidationChain[] {
+    return [
+      body("titulo")
+        .notEmpty()
+        .withMessage("El nombre del foro es requerido")
+        .isLength({ min: 2, max: 100 })
+        .withMessage("El nombre del foro debe tener entre 2 y 100 caracteres"),
+      body("id_perfil")
+        .notEmpty()
+        .isInt({ min: 1 })
+        .withMessage("Falta id del dueño del foro"),
+    ];
+  }
+
+  // Validaciones para crear foro
+  static validarRespuesta(): ValidationChain[] {
+    return [
+      body("contenido")
+        .notEmpty()
+        .withMessage("El contenido de la respuesta es requerido")
+        .isLength({ min: 1, max: 500 })
+        .withMessage("El nombre del foro debe tener entre 1 y 500 caracteres"),
     ];
   }
 
@@ -258,13 +298,9 @@ export class ExpressValidators {
         .withMessage("El ID del perfil debe ser un UUID válido"),
 
       // Todos los campos son opcionales para actualización
-      body("nombre")
-        .optional()
-        .trim(),
+      body("nombre").optional().trim(),
 
-      body("biografia")
-        .optional()
-        .trim(),
+      body("biografia").optional().trim(),
 
       body("telefono")
         .optional()
@@ -310,17 +346,11 @@ export class ExpressValidators {
           "El estado civil debe ser uno de: soltero, casado, divorciado, viudo, unión libre"
         ),
 
-      body("experiencia")
-        .optional()
-        .trim(),
+      body("experiencia").optional().trim(),
 
-      body("educacion")
-        .optional()
-        .trim(),
+      body("educacion").optional().trim(),
 
-      body("ubicacion")
-        .optional()
-        .trim(),
+      body("ubicacion").optional().trim(),
 
       body("pagina_web")
         .optional({ values: "falsy" })
@@ -332,9 +362,7 @@ export class ExpressValidators {
         .isURL()
         .withMessage("La URL de la foto de perfil no es válida"),
 
-      body("red_social")
-        .optional({ values: "falsy" })
-        .trim(),
+      body("red_social").optional({ values: "falsy" }).trim(),
 
       body("rol")
         .optional()
