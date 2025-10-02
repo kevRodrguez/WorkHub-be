@@ -12,6 +12,7 @@ export const EmpresasRepository = {
       pe.id_perfil AS id_seguido,
       pe.nombre AS nombre_seguido, 
       pe.link_foto_perfil as foto_seguido, 
+      pe.ubicacion AS ubicacion_seguido,
       se.id_seguidor,
       CASE 
       WHEN se.id_seguidor IS NULL THEN FALSE
