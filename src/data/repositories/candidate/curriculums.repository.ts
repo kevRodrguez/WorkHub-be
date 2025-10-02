@@ -1,12 +1,37 @@
 import { pool } from "../../../config/db";
-import { Curriculum } from "../../../interfaces";
+import { Curriculum, CrearCurriculumDTO } from "../../../interfaces";
 
 export const CurriculumsRepository = {
   async getCurriculums(): Promise<Curriculum[]> {
     const result = await pool.query(
-      "SELECT * FROM curriculums ORDER BY id_curriculum"
+      "SELECT * FROM curriculums ORDER BY fecha_subida DESC"
     );
     return result.rows;
+  },
+
+  async getCurriculumsByPerfilId(id_perfil: number): Promise<Curriculum[]> {
+    const result = await pool.query(
+      `SELECT 
+        id_curriculum,
+        id_perfil,
+        url_curriculum,
+        nombre_archivo,
+        tamano_archivo,
+        fecha_subida
+      FROM curriculums 
+      WHERE id_perfil = $1 
+      ORDER BY fecha_subida DESC`,
+      [id_perfil]
+    );
+    return result.rows;
+  },
+
+  async countCurriculumsByPerfilId(id_perfil: number): Promise<number> {
+    const result = await pool.query(
+      "SELECT COUNT(*) as total FROM curriculums WHERE id_perfil = $1",
+      [id_perfil]
+    );
+    return parseInt(result.rows[0].total, 10);
   },
 
   async getCurriculumById(id_curriculum: number): Promise<Curriculum | null> {
@@ -18,29 +43,36 @@ export const CurriculumsRepository = {
     return result.rows[0] || null;
   },
 
-  async insertarCurriculum(
-    id_perfil: number,
-    url_curriculum: string
-  ): Promise<Curriculum> {
+  async insertarCurriculum(datos: CrearCurriculumDTO): Promise<Curriculum> {
     const result = await pool.query(
-      `INSERT INTO curriculums (id_perfil, url_curriculum) 
-       VALUES ($1, $2) RETURNING *`,
-      [id_perfil, url_curriculum]
+      `INSERT INTO curriculums (
+        id_perfil, 
+        url_curriculum, 
+        nombre_archivo, 
+        tamano_archivo
+      ) VALUES ($1, $2, $3, $4) 
+      RETURNING *`,
+      [
+        datos.id_perfil,
+        datos.url_curriculum,
+        datos.nombre_archivo,
+        datos.tamano_archivo,
+      ]
     );
 
     return result.rows[0];
   },
 
-  async actualizarCurriculum(
+  async actualizarNombreCurriculum(
     id_curriculum: number,
-    url_curriculum: string
+    nombre_archivo: string
   ): Promise<Curriculum | null> {
     const result = await pool.query(
       `UPDATE curriculums 
-      SET url_curriculum = $1 
+      SET nombre_archivo = $1 
       WHERE id_curriculum = $2 
       RETURNING *`,
-      [url_curriculum, id_curriculum]
+      [nombre_archivo, id_curriculum]
     );
 
     return result.rows[0] || null;
