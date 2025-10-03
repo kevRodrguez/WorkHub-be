@@ -53,6 +53,7 @@ export const AplicacionesEnterpriseRepository = {
         p.nombre,
         p.id_usuario,
         t.nombre_trabajo,
+        TO_CHAR(t.fecha_publicacion, 'DD/MM/YYYY') AS fecha_publicacion,
         p.ubicacion,
         p.experiencia,
         p.educacion,
