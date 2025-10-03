@@ -8,6 +8,7 @@ import {
 
 export const EmpresasRepository = {
   async getEmpresas(id_empresa: number) {
+
     const query = `SELECT
       pe.id_perfil                          AS id_seguido,
       pe.nombre                             AS nombre_seguido,
@@ -28,6 +29,7 @@ export const EmpresasRepository = {
     FROM perfiles pe
     WHERE pe.rol = 'empresa'
       AND pe.id_perfil != $1`;
+
 
     const result = await pool.query(query, [id_empresa]);
 

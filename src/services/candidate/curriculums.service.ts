@@ -1,8 +1,6 @@
-import exp from "constants";
 import { CurriculumsRepository } from "../../data/repositories/candidate/curriculums.repository";
-import { ActualizarCurriculumDTO, Curriculum } from "../../interfaces";
+import { CrearCurriculumDTO, Curriculum } from "../../interfaces";
 import { NotFoundError, BusinessRuleError } from "../../utils/errors";
-import { Validators } from "../../utils/validators";
 
 export const CurriculumsService = {
   async getCurriculums(): Promise<Curriculum[]> {
@@ -15,74 +13,88 @@ export const CurriculumsService = {
     return curriculums;
   },
 
+  async getCurriculumsByPerfilId(id_perfil: number): Promise<Curriculum[]> {
+    if (!id_perfil || id_perfil <= 0) {
+      throw new BusinessRuleError("El ID del perfil no es válido");
+    }
+
+    const curriculums =
+      await CurriculumsRepository.getCurriculumsByPerfilId(id_perfil);
+
+    return curriculums;
+  },
+
   async getCurriculumById(id: number): Promise<Curriculum> {
-    // express-validator ya validó que id sea positivo
     const curriculum = await CurriculumsRepository.getCurriculumById(id);
     if (!curriculum) {
-      throw new NotFoundError(`Currículum con ID ${id} no encontrado`);
+      throw new NotFoundError(`CV no encontrado`);
     }
     return curriculum;
   },
 
-  async insertarCurriculum(datos: Partial<Curriculum>): Promise<Curriculum> {
-    // Validar los datos antes de insertar
-    const { id_perfil, url_curriculum } = datos;
-    if (!id_perfil || !url_curriculum) {
+  async insertarCurriculum(datos: CrearCurriculumDTO): Promise<Curriculum> {
+    const { id_perfil, url_curriculum, nombre_archivo, tamano_archivo } =
+      datos;
+
+    if (!id_perfil || !url_curriculum || !nombre_archivo || !tamano_archivo) {
       throw new BusinessRuleError("Faltan datos requeridos");
     }
 
-    // Insertar el currículum
-    const curriculum = await CurriculumsRepository.insertarCurriculum(
-      id_perfil,
-      url_curriculum
-    );
+    if (tamano_archivo <= 0) {
+      throw new BusinessRuleError("El tamaño del archivo no es válido");
+    }
+
+    const totalCVs =
+      await CurriculumsRepository.countCurriculumsByPerfilId(id_perfil);
+
+    if (totalCVs >= 3) {
+      throw new BusinessRuleError(
+        "Has alcanzado el límite máximo de 3 CVs. Por favor, elimina uno antes de subir otro."
+      );
+    }
+
+    const curriculum = await CurriculumsRepository.insertarCurriculum(datos);
 
     return curriculum;
   },
 
-  async actualizarCurriculum(
+  async actualizarNombreCurriculum(
     id_curriculum: number,
-    datos: ActualizarCurriculumDTO
+    nombre_archivo: string
   ): Promise<Curriculum> {
-    // express-validator ya validó que id_curriculum sea positivo y los datos básicos
+    if (!nombre_archivo || nombre_archivo.trim().length === 0) {
+      throw new BusinessRuleError("El nombre del archivo no puede estar vacío");
+    }
 
-    // Verificar que el currículum existe
+    if (nombre_archivo.length > 255) {
+      throw new BusinessRuleError(
+        "El nombre del archivo no puede exceder los 255 caracteres"
+      );
+    }
+
     await this.getCurriculumById(id_curriculum);
 
-    // Sanitizar datos
-    const datosSanitizados = {
-      url_curriculum: datos.url_curriculum,
-    };
-
     const curriculumActualizado =
-      await CurriculumsRepository.actualizarCurriculum(
+      await CurriculumsRepository.actualizarNombreCurriculum(
         id_curriculum,
-        datosSanitizados.url_curriculum
+        nombre_archivo
       );
 
     if (!curriculumActualizado) {
-      throw new NotFoundError(
-        `No se pudo actualizar el currículum con ID ${id_curriculum}`
-      );
+      throw new NotFoundError("Error al actualizar el nombre del CV");
     }
 
     return curriculumActualizado;
   },
 
-  async eliminarCurriculum(id_curriculum: number): Promise<Curriculum> {
-    // express-validator ya validó que id_curriculum sea positivo
+  async eliminarCurriculum(id_curriculum: number): Promise<void> {
     await this.getCurriculumById(id_curriculum);
 
-    const curriculum = await CurriculumsRepository.eliminarCurriculum(
-      id_curriculum
-    );
+    const curriculum =
+      await CurriculumsRepository.eliminarCurriculum(id_curriculum);
 
     if (!curriculum) {
-      throw new NotFoundError(
-        `No se pudo eliminar el currículum con ID ${id_curriculum}`
-      );
+      throw new NotFoundError("Error al eliminar el CV");
     }
-
-    return curriculum;
   },
 };

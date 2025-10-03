@@ -1,35 +1,31 @@
 import { Router } from "express";
 import { CurriculumsCandidateController } from "./curriculums.controller";
-import { ExpressValidators } from "../../../utils/express-validators";
-import { handleValidationErrors } from "../../../utils/validation-error.middleware";
 
 export class CurriculumsCandidateRoutes {
   static get routes(): Router {
     const router = Router();
 
-    router.get("/", CurriculumsCandidateController.getCurriculums);
+    // GET /api/candidate/curriculums/perfil/:idPerfil - Obtener CVs por perfil
     router.get(
-      "/:id",
-      ExpressValidators.validarIdParametro(),
-      handleValidationErrors,
-      CurriculumsCandidateController.getCurriculumById
+      "/perfil/:idPerfil",
+      CurriculumsCandidateController.getCurriculumsByPerfilId
     );
+
+    // POST /api/candidate/curriculums - Crear nuevo CV
     router.post(
       "/",
-      ExpressValidators.insertarCurriculum(),
-      handleValidationErrors,
       CurriculumsCandidateController.insertarCurriculum
     );
-    router.put(
-      "/:id",
-      ExpressValidators.actualizarCurriculum(),
-      handleValidationErrors,
-      CurriculumsCandidateController.actualizarCurriculum
+
+    // PATCH /api/candidate/curriculums/:idCurriculum - Actualizar nombre del CV
+    router.patch(
+      "/:idCurriculum",
+      CurriculumsCandidateController.actualizarNombreCurriculum
     );
+
+    // DELETE /api/candidate/curriculums/:idCurriculum - Eliminar CV
     router.delete(
-      "/:id",
-      ExpressValidators.validarIdParametro(),
-      handleValidationErrors,
+      "/:idCurriculum",
       CurriculumsCandidateController.eliminarCurriculum
     );
 
