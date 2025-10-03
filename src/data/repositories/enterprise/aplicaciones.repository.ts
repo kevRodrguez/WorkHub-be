@@ -2,6 +2,8 @@ import { UUID } from "crypto";
 import { pool } from "../../../config/db";
 import { PerfilEmpresa } from "../../../interfaces/perfil.enterprise.interface";
 import { CustomError } from "../../../utils/CustomError";
+import { NotificacionesRepository } from "../shared/notificaciones.repository";
+import { TrabajosRepository } from "./trabajos.repository";
 
 export const AplicacionesEnterpriseRepository = {
   async getAplicacionesByIdTrabajo(id_trabajo: number): Promise<any[]> {
@@ -91,6 +93,24 @@ export const AplicacionesEnterpriseRepository = {
     if (!result.rows || result.rows.length === 0) {
       throw new CustomError(404, "No se encontraró la aplicacion para este trabajo");
     }
+
+
+    //plantilla de mensaje
+    let mensaje = 'Tu aplicacion a un Trabajo ha sido aceptada/rechazada';
+
+
+    // Obtener el nombre del trabajo
+    const nombreTrabajo = await TrabajosRepository.obtenerNombreTrabajoPorId(result.rows[0].id_trabajo);
+
+
+
+    if (result.rows[0].estado === 'aceptado') {
+      mensaje = `Felicidades! Tu aplicacion a ${nombreTrabajo ? nombreTrabajo : '<nombre del trabajo>'} ha sido aceptada`;
+    }
+    else {
+      mensaje = `Lo sentimos. Tu aplicacion a ${nombreTrabajo ? nombreTrabajo : '<nombre del trabajo>'} ha sido rechazada`;
+    }
+    NotificacionesRepository.postNotificacion(result.rows[0].id_candidato, 'aplicacion', mensaje);
     return result.rows;
   },
 
