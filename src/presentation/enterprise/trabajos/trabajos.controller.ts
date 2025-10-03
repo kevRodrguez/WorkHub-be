@@ -80,18 +80,18 @@ export const TrabajosEnterpriseController = {
     }
   },
 
-  async eliminarTrabajo(req: Request, res: Response) {
+  async cerrarTrabajo(req: Request, res: Response) {
     const { id_trabajo } = req.params;
 
     try {
-      const trabajoEliminado = await TrabajosService.eliminarTrabajo(
+      const trabajoEliminado = await TrabajosService.cerrarTrabajo(
         parseInt(id_trabajo)
       );
 
       res.status(200).json({
         success: true,
         data: trabajoEliminado,
-        message: "Trabajo eliminado exitosamente",
+        message: "Trabajo cerrado exitosamente",
       });
     } catch (error) {
       if (error instanceof NotFoundError) {
@@ -108,4 +108,32 @@ export const TrabajosEnterpriseController = {
       }
     }
   },
+  async abrirTrabajo(req: Request, res: Response) {
+    const { id_trabajo } = req.params;
+
+    try {
+      const trabajoEliminado = await TrabajosService.abrirTrabajo(
+        parseInt(id_trabajo)
+      );
+
+      res.status(200).json({
+        success: true,
+        data: trabajoEliminado,
+        message: "Trabajo abierto exitosamente",
+      });
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        res.status(404).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Error interno del servidor",
+          error: (error as Error).message,
+        });
+      }
+    }
+  }
 };

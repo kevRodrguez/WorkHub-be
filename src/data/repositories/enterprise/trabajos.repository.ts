@@ -87,9 +87,23 @@ export const TrabajosRepository = {
     return result.rows[0] || null;
   },
 
-  async eliminarTrabajo(id_trabajo: number): Promise<Trabajo | null> {
+  async cerrarTrabajo(id_trabajo: number): Promise<Trabajo | null> {
     const result = await pool.query(
       "UPDATE trabajos SET estado = false WHERE id_trabajo = $1 RETURNING *",
+      [id_trabajo]
+    );
+
+    if (result.rows.length === 0) {
+      throw new CustomError(404, "Trabajo no encontrado");
+    }
+
+    return result.rows[0] || null;
+  },
+
+
+  async abrirTrabajo(id_trabajo: number): Promise<Trabajo | null> {
+    const result = await pool.query(
+      "UPDATE trabajos SET estado = true WHERE id_trabajo = $1 RETURNING *",
       [id_trabajo]
     );
 
