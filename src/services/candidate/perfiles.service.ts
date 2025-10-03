@@ -3,6 +3,7 @@ import { PerfilesRepository } from "../../data/repositories/candidate/perfiles.r
 import { ActualizarPerfilDTO, CrearPerfilDTO, Perfil } from "../../interfaces";
 import { NotFoundError, BusinessRuleError } from "../../utils/errors";
 import { Validators } from "../../utils/validators";
+import { CustomError } from "../../utils/CustomError";
 
 export const PerfilesCandidateService = {
   async getPerfiles(): Promise<Perfil[]> {
@@ -146,6 +147,32 @@ export const PerfilesCandidateService = {
         `Ya existe un perfil para el usuario con ID ${id_usuario}`
       );
     }
+  },
+
+  async getTrabajosAplicados(id_usuario: UUID) {
+
+    await this.getPerfilById(id_usuario); // Verificar que el perfil existe
+
+    const trabajos = await PerfilesRepository.getTrabajosAplicados(id_usuario);
+
+    if (!trabajos || trabajos.length === 0) {
+      throw new NotFoundError("No se encontraron trabajos aplicados");
+    }
+
+    return trabajos;
+  },
+
+  async getTopTrabajosAplicados(id_usuario: UUID) {
+
+    await this.getPerfilById(id_usuario); // Verificar que el perfil existe
+
+    const trabajos = await PerfilesRepository.getTopTrabajosAplicados(id_usuario);
+    
+    if (!trabajos || trabajos.length === 0) {
+      throw new NotFoundError("No se encontraron trabajos aplicados");
+    }
+
+    return trabajos;
   },
 
   // Sanitización adicional (express-validator ya maneja lo básico)

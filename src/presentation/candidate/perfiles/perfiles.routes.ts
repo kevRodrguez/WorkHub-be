@@ -7,6 +7,8 @@ export class PerfilCandidateRoutes {
   static get routes(): Router {
     const router = Router();
 
+    // Rutas para Ajustes del candidato
+
     router.get("/", PerfilesCandidateController.getPerfiles);
 
     router.get(
@@ -34,6 +36,13 @@ export class PerfilCandidateRoutes {
       handleValidationErrors,
       PerfilesCandidateController.eliminarPerfil
     );
+
+    // Rutas para Seccion General del perfil
+    router.get("/general/:id", PerfilesCandidateController.getTopTrabajosAplicados);
+
+
+    // Rutas para Trabajos Aplicados
+    router.get("/trabajos-aplicados/:id", PerfilesCandidateController.getTrabajosAplicados);
 
     return router;
   }

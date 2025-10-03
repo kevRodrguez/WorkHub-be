@@ -184,4 +184,56 @@ export const PerfilesCandidateController = {
       }
     }
   },
+
+  async getTrabajosAplicados(req: Request, res: Response){
+    try {
+      const id = req.params.id as UUID;
+      const trabajos = await PerfilesCandidateService.getTrabajosAplicados(id);
+
+      res.json({
+        success: true,
+        data: trabajos,
+        message: "Trabajos aplicados obtenidos exitosamente",
+      });
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        res.status(404).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Error interno del servidor",
+          error: (error as Error).message,
+        });
+      }
+    }
+  },
+
+  async getTopTrabajosAplicados(req: Request, res: Response){
+    try {
+      const id = req.params.id as UUID;
+      const trabajos = await PerfilesCandidateService.getTopTrabajosAplicados(id);
+
+      res.json({
+        success: true,
+        data: trabajos,
+        message: "Trabajos aplicados obtenidos exitosamente",
+      });
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        res.status(404).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Error interno del servidor",
+          error: (error as Error).message,
+        });
+      }
+    }
+  }
 };
