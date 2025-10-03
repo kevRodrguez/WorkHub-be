@@ -35,7 +35,45 @@ export const EmpresasRepository = {
       throw new CustomError(404, "No se encontraron empresas");
     }
     return result.rows;
+  },
+
+
+  async seguirEmpresa(id_seguidor: number, id_seguido: number) {
+    const query = `
+      INSERT INTO seguidores_empresas (id_seguidor, id_seguido)
+      VALUES ($1, $2)
+      RETURNING *;
+    `;
+    const result = await pool.query(query, [id_seguidor, id_seguido]);
+    return result.rows[0];
+  },
+
+  async dejarDeSeguirEmpresa(id_seguidor: number, id_seguido: number) {
+    // Verifica si existen ambos perfiles (empresa y seguidor)
+    const checkQuery = `
+      SELECT id_perfil
+      FROM perfiles
+      WHERE id_perfil = $1 OR id_perfil = $2
+    `;
+
+    console.log(id_seguidor, id_seguido);
+    const checkResult = await pool.query(checkQuery, [id_seguidor, id_seguido]);
+    if (checkResult.rows.length < 2) {
+      throw new CustomError(404, "No se encontró alguna de las empresas");
+    }
+
+    const query = `
+      DELETE FROM seguidores_empresas
+      WHERE id_seguidor = $1 AND id_seguido = $2
+      RETURNING *;
+    `;
+    const result = await pool.query(query, [id_seguidor, id_seguido]);
+
+    console.log(result)
+    if (result.rowCount === 0) {
+      throw new CustomError(404, "No se encontró la relación para eliminar");
+    }
+    return result.rows[0];
   }
-
-
 };
+

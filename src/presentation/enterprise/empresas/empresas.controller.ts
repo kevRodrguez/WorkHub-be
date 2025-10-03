@@ -29,8 +29,40 @@ export const EmpresasEnterpriseController = {
 
     }
 
+  },
+
+  async seguirEmpresa(req: Request, res: Response, next: NextFunction) {
+    const { id_seguidor, id_seguido } = req.body;
+    try {
+      const resultado = await EmpresasEnterpriseService.seguirEmpresa(
+        parseInt(id_seguidor),
+        parseInt(id_seguido)
+      );
+      return res.status(200).json({
+        success: true,
+        data: resultado,
+        message: "Empresa seguida exitosamente",
+      });
+    } catch (error) {
+      return next(error);
+    }
+  },
+
+  async dejarDeSeguirEmpresa(req: Request, res: Response, next: NextFunction) {
+    const { id_seguidor, id_seguido } = req.body;
+    try {
+      const resultado = await EmpresasEnterpriseService.dejarDeSeguirEmpresa(
+        parseInt(id_seguidor),
+        parseInt(id_seguido)
+      );
+      return res.status(200).json({
+        success: true,
+        data: resultado,
+        message: "Empresa dejada de seguir exitosamente",
+      });
+    } catch (error) {
+      return next(error);
+    }
   }
-
-
 
 };
