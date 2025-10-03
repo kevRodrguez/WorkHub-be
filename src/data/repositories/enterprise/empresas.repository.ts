@@ -8,18 +8,25 @@ import {
 
 export const EmpresasRepository = {
   async getEmpresas(id_empresa: number) {
-    const query = `SELECT 
-      pe.id_perfil AS id_seguido,
-      pe.nombre AS nombre_seguido, 
-      pe.link_foto_perfil as foto_seguido, 
-      se.id_seguidor,
-      CASE 
-      WHEN se.id_seguidor IS NULL THEN FALSE
-      ELSE TRUE
-      END AS es_seguida
-      FROM perfiles pe
-      LEFT JOIN seguidores_empresas se ON se.id_seguido = pe.id_perfil
-      WHERE rol = 'empresa' AND id_perfil != $1`;
+    const query = `SELECT
+      pe.id_perfil                          AS id_seguido,
+      pe.nombre                             AS nombre_seguido,
+      pe.link_foto_perfil                   AS foto_seguido,
+      EXISTS (
+      SELECT 1
+      FROM seguidores_empresas se
+      WHERE se.id_seguido = pe.id_perfil
+        AND se.id_seguidor = $1
+      )                                     AS es_seguida_por_10,
+      EXISTS (
+      SELECT 1
+      FROM seguidores_empresas se
+      WHERE se.id_seguido = $1
+        AND se.id_seguidor = pe.id_perfil
+      )                                     AS sigue_a_10
+    FROM perfiles pe
+    WHERE pe.rol = 'empresa'
+      AND pe.id_perfil != $1`;
 
     const result = await pool.query(query, [id_empresa]);
 
