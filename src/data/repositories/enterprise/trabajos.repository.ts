@@ -7,6 +7,29 @@ import {
 } from "../../../interfaces";
 
 export const TrabajosRepository = {
+
+  async obtenerNombreTrabajoPorId(id_trabajo: number) {
+
+    try {
+
+      const result = await pool.query(
+        "SELECT nombre_trabajo FROM trabajos WHERE id_trabajo = $1 AND estado = true",
+        [id_trabajo]
+      );
+
+      if (result.rows.length === 0) {
+        throw new CustomError(404, "Trabajo no encontrado");
+      }
+
+
+      return result.rows[0].nombre_trabajo || null;
+    } catch (error) {
+      console.error("Error al obtener el trabajo por ID:", error);
+      return null;
+
+    }
+  },
+
   async insertarTrabajo(trabajo: CrearTrabajoDTO): Promise<CrearTrabajoDTO> {
     const result = await pool.query(
       "INSERT INTO trabajos (id_perfil, id_categoria, nombre_trabajo, descripcion, responsabilidades, salario_minimo, salario_maximo, modalidad, educacion, experiencia, fecha_expiracion, nivel, ubicacion) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *",
@@ -64,9 +87,23 @@ export const TrabajosRepository = {
     return result.rows[0] || null;
   },
 
-  async eliminarTrabajo(id_trabajo: number): Promise<Trabajo | null> {
+  async cerrarTrabajo(id_trabajo: number): Promise<Trabajo | null> {
     const result = await pool.query(
       "UPDATE trabajos SET estado = false WHERE id_trabajo = $1 RETURNING *",
+      [id_trabajo]
+    );
+
+    if (result.rows.length === 0) {
+      throw new CustomError(404, "Trabajo no encontrado");
+    }
+
+    return result.rows[0] || null;
+  },
+
+
+  async abrirTrabajo(id_trabajo: number): Promise<Trabajo | null> {
+    const result = await pool.query(
+      "UPDATE trabajos SET estado = true WHERE id_trabajo = $1 RETURNING *",
       [id_trabajo]
     );
 

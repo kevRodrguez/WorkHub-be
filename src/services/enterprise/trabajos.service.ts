@@ -29,8 +29,13 @@ export const TrabajosService = {
     return await TrabajosRepository.actualizarTrabajo(id_trabajo, data);
   },
 
-  async eliminarTrabajo(id_trabajo: number): Promise<void> {
-    await TrabajosRepository.eliminarTrabajo(id_trabajo);
+
+
+  async cerrarTrabajo(id_trabajo: number): Promise<void> {
+    await TrabajosRepository.cerrarTrabajo(id_trabajo);
+  },
+  async abrirTrabajo(id_trabajo: number): Promise<void> {
+    await TrabajosRepository.abrirTrabajo(id_trabajo);
   },
 
   // Validaciones de negocio

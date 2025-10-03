@@ -22,8 +22,9 @@ export class TrabajosEnterpriseRoutes {
       handleValidationErrors,
       TrabajosEnterpriseController.actualizarTrabajo
     );
-    router.delete("/:id_trabajo", TrabajosEnterpriseController.eliminarTrabajo);
+    router.put("/cerrar/:id_trabajo", TrabajosEnterpriseController.cerrarTrabajo);
 
+    router.put('/abrir/:id_trabajo', TrabajosEnterpriseController.abrirTrabajo);
     return router;
   }
 }
