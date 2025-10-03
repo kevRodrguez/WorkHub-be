@@ -9,7 +9,7 @@ import {
 export const TrabajosRepository = {
   async insertarTrabajo(trabajo: CrearTrabajoDTO): Promise<CrearTrabajoDTO> {
     const result = await pool.query(
-      "INSERT INTO trabajos (id_perfil, id_categoria, nombre_trabajo, descripcion, responsabilidades, salario_minimo, salario_maximo, modalidad, educacion, experiencia, fecha_expiracion, nivel, ubicacion) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) WHERE estaado=true RETURNING *",
+      "INSERT INTO trabajos (id_perfil, id_categoria, nombre_trabajo, descripcion, responsabilidades, salario_minimo, salario_maximo, modalidad, educacion, experiencia, fecha_expiracion, nivel, ubicacion) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *",
       [
         trabajo.id_perfil,
         trabajo.id_categoria,
