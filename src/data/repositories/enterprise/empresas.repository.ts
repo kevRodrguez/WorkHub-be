@@ -9,6 +9,8 @@ import {
 export const EmpresasRepository = {
   async getEmpresas(id_empresa: number) {
 
+
+    //obtener 
     const query = `SELECT
       pe.id_perfil                          AS id_seguido,
       pe.nombre                             AS nombre_seguido,
@@ -32,6 +34,20 @@ export const EmpresasRepository = {
 
 
     const result = await pool.query(query, [id_empresa]);
+
+    // Para cada empresa, obtener las empresas que la siguen
+    for (const row of result.rows) {
+      const seguidoresQuery = `
+      SELECT 
+        perfiles.nombre
+      FROM perfiles 
+      JOIN seguidores_empresas se ON se.id_seguido = perfiles.id_perfil
+      JOIN perfiles pe ON pe.id_perfil = se.id_seguidor
+      WHERE perfiles.id_perfil = $1
+      `;
+      const seguidoresResult = await pool.query(seguidoresQuery, [row.id_seguido]);
+      row.seguidores = seguidoresResult.rows;
+    }
 
     if (!result.rows || result.rows.length === 0) {
       throw new CustomError(404, "No se encontraron empresas");
