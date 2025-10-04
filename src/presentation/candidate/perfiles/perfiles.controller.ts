@@ -235,5 +235,31 @@ export const PerfilesCandidateController = {
         });
       }
     }
+  },
+
+  async getProfileStats(req: Request, res: Response){
+    try {
+      const id = req.params.id as UUID;
+      const stats = await PerfilesCandidateService.getProfileStats(id);
+
+      res.json({
+        success: true,
+        data: stats,
+        message: "Estadísticas del perfil obtenidas exitosamente",
+      });
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        res.status(404).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Error interno del servidor",
+          error: (error as Error).message,
+        });
+      }
+    }
   }
 };

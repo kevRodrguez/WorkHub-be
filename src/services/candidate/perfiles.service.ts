@@ -175,6 +175,18 @@ export const PerfilesCandidateService = {
     return trabajos;
   },
 
+  async getProfileStats(id_usuario: UUID) {
+    await this.getPerfilById(id_usuario); // Verificar que el perfil existe
+
+    const stats = await PerfilesRepository.getProfileStats(id_usuario);
+
+    if (!stats) {
+      throw new NotFoundError("No se encontraron estadísticas del perfil");
+    }
+
+    return stats;
+  },
+
   // Sanitización adicional (express-validator ya maneja lo básico)
   sanitizarDatosPerfil(datos: CrearPerfilDTO): CrearPerfilDTO {
     return {

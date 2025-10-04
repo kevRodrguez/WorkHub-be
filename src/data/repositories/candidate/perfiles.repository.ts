@@ -190,4 +190,30 @@ export const PerfilesRepository = {
 
     return result.rows;
   },
+
+  async getProfileStats(id_usuario: UUID){
+    const result = await pool.query(`
+      SELECT
+      (SELECT COUNT(*)
+      FROM public.aplicaciones a
+      JOIN public.perfiles p ON p.id_perfil = a.id_candidato
+      WHERE p.id_usuario = $1
+      ) AS aplicaciones_count,
+
+      (SELECT COUNT(*)
+      FROM public.favoritos f
+      JOIN public.perfiles p2 ON p2.id_perfil = f.id_perfil
+      WHERE p2.id_usuario = $1
+      ) AS favoritos_count,
+
+      (SELECT COUNT(*)
+      FROM public.notificaciones n
+      JOIN public.perfiles p3 ON p3.id_perfil = n.id_destinatario
+      WHERE p3.id_usuario = $1
+        AND (n.tipo ILIKE '%trabajo%' OR n.tipo ILIKE '%alerta%')
+      ) AS alertas_trabajo_count;
+      `, [id_usuario]);
+
+    return result.rows[0];
+  }
 };

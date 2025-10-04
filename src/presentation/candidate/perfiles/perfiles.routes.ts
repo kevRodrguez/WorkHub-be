@@ -39,10 +39,13 @@ export class PerfilCandidateRoutes {
 
     // Rutas para Seccion General del perfil
     router.get("/general/:id", PerfilesCandidateController.getTopTrabajosAplicados);
+    router.get("/stats/:id", PerfilesCandidateController.getProfileStats);
 
 
     // Rutas para Trabajos Aplicados
     router.get("/trabajos-aplicados/:id", PerfilesCandidateController.getTrabajosAplicados);
+
+
 
     return router;
   }
