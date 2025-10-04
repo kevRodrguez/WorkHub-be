@@ -39,7 +39,7 @@ export const EmpresasRepository = {
     for (const row of result.rows) {
       const seguidoresQuery = `
       SELECT 
-        perfiles.nombre
+        pe.nombre
       FROM perfiles 
       JOIN seguidores_empresas se ON se.id_seguido = perfiles.id_perfil
       JOIN perfiles pe ON pe.id_perfil = se.id_seguidor
