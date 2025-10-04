@@ -11,6 +11,8 @@ export class TrabajosRoutes {
     const router = Router();
 
     router.get("/", TrabajosController.getTrabajos);
+    router.get("/trabajoId/:id_trabajo", TrabajosController.getTrabajosById);
+    router.get("/activos", TrabajosController.getTrabajosActivos);
     router.get(
       "/:id_perfil",
       runValidations(getTrabajoByIdValidator),

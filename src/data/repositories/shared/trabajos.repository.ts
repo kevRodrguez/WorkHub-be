@@ -33,4 +33,35 @@ export const TrabajosRepository = {
 
     return result.rows;
   },
+
+  async getTrabajosActivos(): Promise<Trabajo[]> {
+    const result = await pool.query(
+      "SELECT * FROM trabajos WHERE fecha_expiracion >= NOW() AND estado = TRUE ORDER BY fecha_expiracion ASC;"
+    );
+
+    if (result.rows.length === 0) {
+      throw new CustomError(
+        404,
+        "No se encontraron trabajos para el perfil dado"
+      );
+    }
+
+    return result.rows;
+  },
+
+  async getTrabajosById(id_trabajo: number): Promise<Trabajo[]> {
+    const result = await pool.query(
+      "SELECT * FROM trabajos WHERE fecha_expiracion >= NOW() AND id_trabajo = $1 ORDER BY fecha_expiracion ASC;",[id_trabajo]
+    );
+
+    if (result.rows.length === 0) {
+      throw new CustomError(
+        404,
+        "No se encontraron trabajos para el perfil dado"
+      );
+    }
+
+    return result.rows;
+  },
 };
+

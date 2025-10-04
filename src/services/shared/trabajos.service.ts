@@ -12,4 +12,15 @@ export const TrabajosService = {
 
     return trabajos;
   },
+
+  async getTrabajosActivos() {
+    const trabajos = await TrabajosRepository.getTrabajosActivos();
+
+    return trabajos;
+  },
+  async getTrabajosById(id_trabajo: number) {
+    const trabajos = await TrabajosRepository.getTrabajosById(id_trabajo);
+
+    return trabajos;
+  },
 };

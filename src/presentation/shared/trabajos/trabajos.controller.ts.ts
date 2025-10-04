@@ -32,4 +32,33 @@ export const TrabajosController = {
       return next(error);
     }
   },
+
+  async getTrabajosActivos(req: Request, res: Response, next: NextFunction) {
+    try {
+      const trabajos = await TrabajosService.getTrabajosActivos();
+
+      res.json({
+        success: true,
+        data: trabajos,
+        message: "Trabajos obtenidos exitosamente",
+      });
+    } catch (error) {
+      return next(error);
+    }
+  },
+
+  async getTrabajosById(req: Request, res: Response, next: NextFunction) {
+    const { id_trabajo } = req.params;
+    try {
+      const trabajos = await TrabajosService.getTrabajosById(parseInt(id_trabajo));
+
+      res.json({
+        success: true,
+        data: trabajos,
+        message: "Trabajos obtenidos exitosamente",
+      });
+    } catch (error) {
+      return next(error);
+    }
+  },
 };
