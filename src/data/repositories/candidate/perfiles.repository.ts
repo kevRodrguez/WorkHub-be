@@ -210,7 +210,6 @@ export const PerfilesRepository = {
       FROM public.notificaciones n
       JOIN public.perfiles p3 ON p3.id_perfil = n.id_destinatario
       WHERE p3.id_usuario = $1
-        AND (n.tipo ILIKE '%trabajo%' OR n.tipo ILIKE '%alerta%')
       ) AS alertas_trabajo_count;
       `, [id_usuario]);
 
