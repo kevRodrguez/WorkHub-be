@@ -167,7 +167,7 @@ export const PerfilesCandidateService = {
     await this.getPerfilById(id_usuario); // Verificar que el perfil existe
 
     const trabajos = await PerfilesRepository.getTopTrabajosAplicados(id_usuario);
-    
+
     if (!trabajos || trabajos.length === 0) {
       throw new NotFoundError("No se encontraron trabajos aplicados");
     }
@@ -177,12 +177,12 @@ export const PerfilesCandidateService = {
 
   async getTrabajosFavoritos(id_usuario: UUID) {
     await this.getPerfilById(id_usuario); // Verificar que el perfil existe
-    
+
     const trabajos = await PerfilesRepository.getTrabajosFavoritos(id_usuario);
     if (!trabajos || trabajos.length === 0) {
       throw new NotFoundError("No se encontraron trabajos favoritos");
     }
-    
+
     return trabajos;
   },
 
@@ -196,6 +196,32 @@ export const PerfilesCandidateService = {
     }
 
     return stats;
+  },
+
+  async getAlertasTrabajos(id_usuario: UUID) {
+    await this.getPerfilById(id_usuario); // Verificar que el perfil existe
+
+    const alertas = await PerfilesRepository.getAlertasTrabajo(id_usuario);
+
+    if (!alertas || alertas.length === 0) {
+      throw new NotFoundError("No se encontraron alertas de trabajo");
+    }
+
+    return alertas;
+  },
+
+  async actualizarEstadoNotificacion(id_notificacion: number, leido: boolean) {
+    // Actualizar el estado de la notificación específica
+    const notificacionActualizada = await PerfilesRepository.actualizarEstadoNotificacion(
+      id_notificacion,
+      leido
+    );
+
+    if (!notificacionActualizada) {
+      throw new NotFoundError(`Notificación con ID ${id_notificacion} no encontrada`);
+    }
+
+    return notificacionActualizada;
   },
 
   // Sanitización adicional (express-validator ya maneja lo básico)

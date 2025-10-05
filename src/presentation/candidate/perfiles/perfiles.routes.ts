@@ -12,7 +12,7 @@ export class PerfilCandidateRoutes {
     router.get("/", PerfilesCandidateController.getPerfiles);
 
     router.get(
-      "/:id", 
+      "/:id",
       handleValidationErrors,
       PerfilesCandidateController.getPerfilById
     );
@@ -44,7 +44,15 @@ export class PerfilCandidateRoutes {
 
     // Rutas para Trabajos Aplicados
     router.get("/trabajos-aplicados/:id", PerfilesCandidateController.getTrabajosAplicados);
-    router.get("/trabajos-favoritos/:id", PerfilesCandidateController.getTrabajosFavoritos);  
+    router.get("/trabajos-favoritos/:id", PerfilesCandidateController.getTrabajosFavoritos);
+    router.get("/notificaciones/:id", PerfilesCandidateController.getAlertasTrabajos);
+
+    // Ruta para actualizar el estado de las notificaciones
+    router.put(
+      "/notificaciones/:id",
+      handleValidationErrors,
+      PerfilesCandidateController.actualizarEstadoNotificacion
+    );
 
     return router;
   }
