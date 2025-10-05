@@ -215,5 +215,40 @@ export const PerfilesRepository = {
       `, [id_usuario]);
 
     return result.rows[0];
+  },
+
+  async getTrabajosFavoritos(id_usuario: UUID): Promise<DataTrabajosAplicados[]> {
+    const result = await pool.query(`
+    SELECT
+      f.id_favorito,
+      u.id                     AS id_usuario,
+      f.id_perfil              AS id_perfil_usuario,
+      f.id_trabajo,
+
+      p.link_foto_perfil,
+
+      t.nombre_trabajo,
+      t.modalidad,
+      t.ubicacion,
+      t.salario_minimo,
+      t.salario_maximo,
+      t.fecha_expiracion,
+
+      t.estado                 AS estado_trabajo,
+
+      t.id_perfil              AS id_perfil_empresa,
+      emp.nombre               AS nombre_empresa,
+      emp.link_foto_perfil     AS logo_empresa
+    FROM public.favoritos f
+    JOIN public.perfiles p       ON p.id_perfil = f.id_perfil
+    JOIN auth.users u            ON u.id = p.id_usuario
+    JOIN public.trabajos t       ON t.id_trabajo = f.id_trabajo
+    LEFT JOIN public.perfiles emp ON emp.id_perfil = t.id_perfil
+    WHERE u.id = $1 -- '67158c53-7a28-4719-b169-93deb9450427'
+    ORDER BY t.fecha_expiracion DESC NULLS LAST, f.id_favorito DESC;`,
+      [id_usuario]
+    );
+
+    return result.rows;
   }
 };

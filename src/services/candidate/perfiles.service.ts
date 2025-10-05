@@ -175,6 +175,17 @@ export const PerfilesCandidateService = {
     return trabajos;
   },
 
+  async getTrabajosFavoritos(id_usuario: UUID) {
+    await this.getPerfilById(id_usuario); // Verificar que el perfil existe
+    
+    const trabajos = await PerfilesRepository.getTrabajosFavoritos(id_usuario);
+    if (!trabajos || trabajos.length === 0) {
+      throw new NotFoundError("No se encontraron trabajos favoritos");
+    }
+    
+    return trabajos;
+  },
+
   async getProfileStats(id_usuario: UUID) {
     await this.getPerfilById(id_usuario); // Verificar que el perfil existe
 

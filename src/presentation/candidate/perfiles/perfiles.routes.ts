@@ -44,8 +44,7 @@ export class PerfilCandidateRoutes {
 
     // Rutas para Trabajos Aplicados
     router.get("/trabajos-aplicados/:id", PerfilesCandidateController.getTrabajosAplicados);
-
-
+    router.get("/trabajos-favoritos/:id", PerfilesCandidateController.getTrabajosFavoritos);  
 
     return router;
   }
