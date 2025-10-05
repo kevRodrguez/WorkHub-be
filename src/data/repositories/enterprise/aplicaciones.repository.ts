@@ -111,7 +111,7 @@ export const AplicacionesEnterpriseRepository = {
     else {
       mensaje = `Lo sentimos. Tu aplicacion a ${nombreTrabajo ? nombreTrabajo : '<nombre del trabajo>'} ha sido rechazada`;
     }
-    NotificacionesRepository.postNotificacion(result.rows[0].id_candidato, 'aplicacion', mensaje);
+    NotificacionesRepository.postNotificacion(result.rows[0].id_candidato, 'aplicacion', mensaje, id_aplicacion);
     return result.rows;
   },
 
