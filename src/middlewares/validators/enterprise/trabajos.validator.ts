@@ -5,14 +5,14 @@ export const insertarTrabajoValidator: ValidationChain[] = [
     .trim()
     .notEmpty()
     .withMessage("El id del perfil es obligatorio")
-    .isNumeric()
-    .withMessage("El id del perfil debe ser numérico"),
+    .isInt({ min: 1 })
+    .withMessage("El id del perfil debe ser numérico y positivo"),
   body("id_categoria")
     .trim()
     .notEmpty()
     .withMessage("El id de la categoría es obligatorio")
-    .isNumeric()
-    .withMessage("El id de la categoría debe ser numérico"),
+    .isInt({ min: 1 })
+    .withMessage("El id de la categoría debe ser numérico y positivo"),
   body("nombre_trabajo")
     .trim()
     .notEmpty()
@@ -58,6 +58,18 @@ export const insertarTrabajoValidator: ValidationChain[] = [
     .trim()
     .notEmpty()
     .withMessage("La ubicación es obligatoria"),
+  body("cupos")
+    .trim()
+    .notEmpty()
+    .withMessage("Los cupos son obligatorios")
+    .isInt({ min: 1 })
+    .withMessage("Los cupos deben ser un número positivo"),
+  body("aplicar_por")
+    .trim()
+    .notEmpty()
+    .withMessage("El método para aplicar es obligatorio")
+    .isIn(["Email", "WorkHub"])
+    .withMessage("El método para aplicar debe ser 'Email' o 'WorkHub'"),
 ];
 
 export const updateTrabajoValidator: ValidationChain[] = [
@@ -118,4 +130,16 @@ export const updateTrabajoValidator: ValidationChain[] = [
     .trim()
     .notEmpty()
     .withMessage("La ubicación es obligatoria"),
+  body("cupos")
+    .trim()
+    .notEmpty()
+    .withMessage("Los cupos son obligatorios")
+    .isInt({ min: 1 })
+    .withMessage("Los cupos deben ser un número positivo"),
+  body("aplicar_por")
+    .trim()
+    .notEmpty()
+    .withMessage("El método para aplicar es obligatorio")
+    .isIn(["Email", "WorkHub"])
+    .withMessage("El método para aplicar debe ser 'Email' o 'WorkHub'"),
 ];

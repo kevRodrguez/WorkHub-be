@@ -23,12 +23,14 @@ export interface CrearTrabajoDTO {
   responsabilidades: string[];
   salario_minimo: number;
   salario_maximo: number;
-  modalidad: "presencial" | "remoto" | "híbrido";
+  modalidad: "Presencial" | "Remoto" | "Híbrido";
   educacion: string;
   experiencia: string;
   fecha_expiracion: Date;
   nivel: string;
   ubicacion: string;
+  cupos: number;
+  aplicar_por: "Email" | "WorkHub";
 }
 
 export interface ActualizarTrabajoDTO {
@@ -44,4 +46,6 @@ export interface ActualizarTrabajoDTO {
   fecha_expiracion: Date;
   nivel: string;
   ubicacion: string;
+  cupos: number;
+  aplicar_por: "Email" | "WorkHub";
 }
