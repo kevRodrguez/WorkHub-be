@@ -11,7 +11,17 @@ export const RespuestaRepository = {
 
   async getRespuestasByForoId(id_foro: number): Promise<Respuesta[]> {
     const result = await pool.query(
-      "SELECT * FROM respuestas_foros WHERE id_foro = ORDER BY fecha",
+      `
+      SELECT 
+        rf.*, 
+        p.nombre AS nombre_usuario,
+        p.link_foto_perfil
+    FROM respuestas_foros rf
+    JOIN perfiles p ON rf.id_perfil = p.id_perfil
+    WHERE rf.id_foro = $1
+    ORDER BY rf.fecha
+
+        `,
       [id_foro]
     );
     return result.rows as Respuesta[];
@@ -39,7 +49,12 @@ export const RespuestaRepository = {
     contenido: string,
     fecha: Date
   ): Promise<Respuesta> {
-    console.log("Insertando respuesta:", { id_foro, id_perfil, contenido, fecha });
+    console.log("Insertando respuesta:", {
+      id_foro,
+      id_perfil,
+      contenido,
+      fecha,
+    });
     const result = await pool.query(
       "INSERT INTO respuestas_foros (id_foro, id_perfil, contenido, fecha) VALUES ($1, $2, $3, $4) RETURNING *",
       [id_foro, id_perfil, contenido, fecha]

@@ -85,8 +85,8 @@ export const RespuestaForoController = {
       }
     }
   },
-
-  async getRespuestaByForoId(req: Request, res: Response) {
+  
+  async getRespuestasByForoId(req: Request, res: Response) {
     const id = parseInt(req.params.id, 10);
     try {
       const respuestas = await RespuestaService.getRespuestasByForoId(id);
