@@ -39,6 +39,7 @@ export const RespuestaRepository = {
     contenido: string,
     fecha: Date
   ): Promise<Respuesta> {
+    console.log("Insertando respuesta:", { id_foro, id_perfil, contenido, fecha });
     const result = await pool.query(
       "INSERT INTO respuestas_foros (id_foro, id_perfil, contenido, fecha) VALUES ($1, $2, $3, $4) RETURNING *",
       [id_foro, id_perfil, contenido, fecha]

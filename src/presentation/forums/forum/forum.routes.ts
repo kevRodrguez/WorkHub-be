@@ -8,7 +8,7 @@ export class ForumRoutes {
   static get routes(): Router {
     const router = Router();
 
-    router.get("/", ForoService.getForos);
+    router.get("/", ForoController.getForos);
 
     router.get(
       "/:id",

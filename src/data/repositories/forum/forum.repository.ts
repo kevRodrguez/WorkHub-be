@@ -3,7 +3,7 @@ import { Foro } from "../../../interfaces/forum.interface";
 
 export const ForosRepository = {
   async getForos(): Promise<Foro[]> {
-    const result = await pool.query("SELECT * FROM foros ORDER BY id_foro");
+    const result = await pool.query("SELECT * FROM foros ORDER BY fecha");
     return result.rows as Foro[];
   },
 

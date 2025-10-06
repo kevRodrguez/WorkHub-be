@@ -20,8 +20,8 @@ export class RespuestaRoutes {
         router.post("/",
             ExpressValidators.validarRespuesta,
             handleValidationErrors,
-            RespuestaForoController.crearRespuesta
-        );
+      RespuestaForoController.crearRespuesta
+    );
 
         router.put("/:id",
             ExpressValidators.validarRespuesta,
