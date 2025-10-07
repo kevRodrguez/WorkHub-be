@@ -8,10 +8,17 @@ export class ForumRoutes {
   static get routes(): Router {
     const router = Router();
 
-    router.get("/", ForoService.getForos);
+    router.get("/", ForoController.getForos);
 
     router.get(
       "/:id",
+      ExpressValidators.validarIdParametro(),
+      handleValidationErrors,
+      ForoController.getForoById
+    );
+
+    router.get(
+      "/user/:id",
       ExpressValidators.validarIdParametro(),
       handleValidationErrors,
       ForoController.getForoById

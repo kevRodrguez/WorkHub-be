@@ -200,6 +200,10 @@ export class ExpressValidators {
   // Validaciones para crear foro
   static validarRespuesta(): ValidationChain[] {
     return [
+            body("id_perfil")
+        .notEmpty()
+        .isInt()
+        .withMessage("El ID del perfil debe ser válido"),
       body("contenido")
         .notEmpty()
         .withMessage("El contenido de la respuesta es requerido")

@@ -59,7 +59,7 @@ export const ForoController = {
   async getForosByUserId(req: Request, res: Response) {
     const id = parseInt(req.params.id, 10);
     try {
-      const foros = await ForoService.getForoById(id);
+      const foros = await ForoService.getForosByuserId(id);
       res.json({
         success: true,
         data: foros,

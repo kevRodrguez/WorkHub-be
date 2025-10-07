@@ -8,7 +8,14 @@ export const BlogRepository = {
   },
 
   async getBlogById(id_blog: number): Promise<Blog> {
-    const result = await pool.query("SELECT * FROM blogs WHERE id_blog = $1", [
+    const result = await pool.query(    `
+    SELECT b.*, 
+           p.nombre AS nombre_usuario, 
+           p.link_foto_perfil
+    FROM blogs b
+    JOIN perfiles p ON b.id_perfil = p.id_perfil
+    WHERE b.id_blog = $1
+    `, [
       id_blog,
     ]);
     return result.rows[0];

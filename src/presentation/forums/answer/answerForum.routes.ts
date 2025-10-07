@@ -4,37 +4,47 @@ import { ExpressValidators } from "../../../utils/express-validators";
 import { validateHeaderName } from "http";
 import { handleValidationErrors } from "../../../utils/validation-error.middleware";
 
-
 export class RespuestaRoutes {
-    static get routes(): Router {
-        const router = Router();
+  static get routes(): Router {
+    const router = Router();
 
-        router.get("/", RespuestaForoController.getRespuestas);
+    router.get("/", RespuestaForoController.getRespuestas);
 
-        router.get("/:id",
-            ExpressValidators.validarIdParametro(),
-            handleValidationErrors,
-            RespuestaForoController.getRespuestaById
-        );
+    router.get(
+      "/:id",
+      ExpressValidators.validarIdParametro(),
+      handleValidationErrors,
+      RespuestaForoController.getRespuestaById
+    );
 
-        router.post("/",
-            ExpressValidators.validarRespuesta,
-            handleValidationErrors,
-            RespuestaForoController.crearRespuesta
-        );
+    router.get(
+      "/foro/:id",
+      ExpressValidators.validarIdParametro(),
+      handleValidationErrors,
+      RespuestaForoController.getRespuestasByForoId
+    );
 
-        router.put("/:id",
-            ExpressValidators.validarRespuesta,
-            handleValidationErrors,
-            RespuestaForoController.actualizarRespuesta
-        );
+    router.post(
+      "/",
+      // ExpressValidators.validarRespuesta,
+      handleValidationErrors,
+      RespuestaForoController.crearRespuesta
+    );
 
-        router.delete("/:id",
-            ExpressValidators.validarIdParametro(),
-            handleValidationErrors,
-            RespuestaForoController.eliminarRespuesta
-        );
+    router.put(
+      "/:id",
+      ExpressValidators.validarRespuesta,
+      handleValidationErrors,
+      RespuestaForoController.actualizarRespuesta
+    );
 
-        return router;
-    }
+    router.delete(
+      "/:id",
+      ExpressValidators.validarIdParametro(),
+      handleValidationErrors,
+      RespuestaForoController.eliminarRespuesta
+    );
+
+    return router;
+  }
 }
