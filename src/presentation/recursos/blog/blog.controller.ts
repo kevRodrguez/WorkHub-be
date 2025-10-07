@@ -16,7 +16,7 @@ export const BlogController = {
     const blogs = await BlogService.getBlogs();
     try {
       res.json({
-        succes: true,
+        success: true,
         data: blogs,
         message: "Blogs obtenidos con éxito",
       });

@@ -17,6 +17,13 @@ export class ForumRoutes {
       ForoController.getForoById
     );
 
+    router.get(
+      "/user/:id",
+      ExpressValidators.validarIdParametro(),
+      handleValidationErrors,
+      ForoController.getForoById
+    );
+
     router.post(
       "/",
       ExpressValidators.crearForo(),

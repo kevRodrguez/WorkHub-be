@@ -20,10 +20,12 @@ export const ForosRepository = {
   },
 
   async getForosByUserId(id: number): Promise<Foro[] | null> {
-    const result = await pool.query(
-      "SELECT * FROM foros WHERE id_perfil = $1",
-      [id]
-    );
+    const result = await pool.query(`
+    SELECT f.*, p.nombre AS nombre_usuario, p.link_foto_perfil
+    FROM foros f WHERE f.id_perfil = $1
+    JOIN perfiles p ON f.id_perfil = p.id_perfil
+    ORDER BY f.fecha DESC
+    `, [id]);
     return result.rows || null;
   },
 
