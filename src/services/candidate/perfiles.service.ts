@@ -3,6 +3,7 @@ import { PerfilesRepository } from "../../data/repositories/candidate/perfiles.r
 import { ActualizarPerfilDTO, CrearPerfilDTO, Perfil } from "../../interfaces";
 import { NotFoundError, BusinessRuleError } from "../../utils/errors";
 import { Validators } from "../../utils/validators";
+import { CustomError } from "../../utils/CustomError";
 
 export const PerfilesCandidateService = {
   async getPerfiles(): Promise<Perfil[]> {
@@ -146,6 +147,96 @@ export const PerfilesCandidateService = {
         `Ya existe un perfil para el usuario con ID ${id_usuario}`
       );
     }
+  },
+
+  async getTrabajosAplicados(id_usuario: UUID) {
+
+    await this.getPerfilById(id_usuario); // Verificar que el perfil existe
+
+    const trabajos = await PerfilesRepository.getTrabajosAplicados(id_usuario);
+
+    if (!trabajos || trabajos.length === 0) {
+      throw new NotFoundError("No se encontraron trabajos aplicados");
+    }
+
+    return trabajos;
+  },
+
+  async getTopTrabajosAplicados(id_usuario: UUID) {
+
+    await this.getPerfilById(id_usuario); // Verificar que el perfil existe
+
+    const trabajos = await PerfilesRepository.getTopTrabajosAplicados(id_usuario);
+
+    if (!trabajos || trabajos.length === 0) {
+      throw new NotFoundError("No se encontraron trabajos aplicados");
+    }
+
+    return trabajos;
+  },
+
+  async getTrabajosFavoritos(id_usuario: UUID) {
+    await this.getPerfilById(id_usuario); // Verificar que el perfil existe
+
+    const trabajos = await PerfilesRepository.getTrabajosFavoritos(id_usuario);
+    if (!trabajos || trabajos.length === 0) {
+      throw new NotFoundError("No se encontraron trabajos favoritos");
+    }
+
+    return trabajos;
+  },
+
+  async getProfileStats(id_usuario: UUID) {
+    await this.getPerfilById(id_usuario); // Verificar que el perfil existe
+
+    const stats = await PerfilesRepository.getProfileStats(id_usuario);
+
+    if (!stats) {
+      throw new NotFoundError("No se encontraron estadísticas del perfil");
+    }
+
+    return stats;
+  },
+
+  async getAlertasTrabajos(id_usuario: UUID) {
+    await this.getPerfilById(id_usuario); // Verificar que el perfil existe
+
+    const alertas = await PerfilesRepository.getAlertasTrabajo(id_usuario);
+
+    if (!alertas || alertas.length === 0) {
+      throw new NotFoundError("No se encontraron alertas de trabajo");
+    }
+
+    return alertas;
+  },
+
+  async actualizarEstadoNotificacion(id_notificacion: number, leido: boolean) {
+    // Actualizar el estado de la notificación específica
+    const notificacionActualizada = await PerfilesRepository.actualizarEstadoNotificacion(
+      id_notificacion,
+      leido
+    );
+
+    if (!notificacionActualizada) {
+      throw new NotFoundError(`Notificación con ID ${id_notificacion} no encontrada`);
+    }
+
+    return notificacionActualizada;
+  },
+
+  async eliminarFavorito(id_favorito: number): Promise<any> {
+    // Validar que el id_favorito sea un número positivo
+    if (!id_favorito || id_favorito <= 0) {
+      throw new CustomError(400, "El ID del favorito debe ser un número positivo");
+    }
+
+    const favoritoEliminado = await PerfilesRepository.eliminarFavorito(id_favorito);
+
+    if (!favoritoEliminado) {
+      throw new NotFoundError(`Favorito con ID ${id_favorito} no encontrado`);
+    }
+
+    return favoritoEliminado;
   },
 
   // Sanitización adicional (express-validator ya maneja lo básico)

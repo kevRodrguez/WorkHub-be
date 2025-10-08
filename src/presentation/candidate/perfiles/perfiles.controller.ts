@@ -184,4 +184,203 @@ export const PerfilesCandidateController = {
       }
     }
   },
+
+  async getTrabajosAplicados(req: Request, res: Response) {
+    try {
+      const id = req.params.id as UUID;
+      const trabajos = await PerfilesCandidateService.getTrabajosAplicados(id);
+
+      res.json({
+        success: true,
+        data: trabajos,
+        message: "Trabajos aplicados obtenidos exitosamente",
+      });
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        res.status(404).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Error interno del servidor",
+          error: (error as Error).message,
+        });
+      }
+    }
+  },
+
+  async getTopTrabajosAplicados(req: Request, res: Response) {
+    try {
+      const id = req.params.id as UUID;
+      const trabajos = await PerfilesCandidateService.getTopTrabajosAplicados(id);
+
+      res.json({
+        success: true,
+        data: trabajos,
+        message: "Trabajos aplicados obtenidos exitosamente",
+      });
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        res.status(404).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Error interno del servidor",
+          error: (error as Error).message,
+        });
+      }
+    }
+  },
+
+  async getTrabajosFavoritos(req: Request, res: Response) {
+    try {
+      const id = req.params.id as UUID;
+      const trabajos = await PerfilesCandidateService.getTrabajosFavoritos(id);
+
+      res.json({
+        success: true,
+        data: trabajos,
+        message: "Trabajos favoritos obtenidos exitosamente",
+      });
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        res.status(404).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Error interno del servidor",
+          error: (error as Error).message,
+        });
+      }
+    }
+  },
+  async getProfileStats(req: Request, res: Response) {
+    try {
+      const id = req.params.id as UUID;
+      const stats = await PerfilesCandidateService.getProfileStats(id);
+
+      res.json({
+        success: true,
+        data: stats,
+        message: "Estadísticas del perfil obtenidas exitosamente",
+      });
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        res.status(404).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Error interno del servidor",
+          error: (error as Error).message,
+        });
+      }
+    }
+  },
+
+  async getAlertasTrabajos(req: Request, res: Response) {
+    try {
+      const id = req.params.id as UUID;
+      const alertas = await PerfilesCandidateService.getAlertasTrabajos(id);
+
+      res.json({
+        success: true,
+        data: alertas,
+        message: "Alertas de trabajos obtenidas exitosamente",
+      });
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        res.status(404).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Error interno del servidor",
+          error: (error as Error).message,
+        });
+      }
+    }
+  },
+
+  async actualizarEstadoNotificacion(req: Request, res: Response) {
+    try {
+      const id_notificacion = parseInt(req.params.id);
+      const { leido } = req.body;
+
+      const notificacion = await PerfilesCandidateService.actualizarEstadoNotificacion(
+        id_notificacion,
+        leido
+      );
+
+      res.json({
+        success: true,
+        data: notificacion,
+        message: "Estado de notificación actualizado exitosamente",
+      });
+    } catch (error) {
+      if (error instanceof ValidationError) {
+        res.status(400).json({
+          success: false,
+          message: error.message,
+          field: error.field,
+        });
+      } else if (error instanceof NotFoundError) {
+        res.status(404).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Error interno del servidor",
+          error: (error as Error).message,
+        });
+      }
+    }
+  },
+
+  async eliminarFavorito(req: Request, res: Response) {
+    try {
+      const id_favorito = parseInt(req.params.id);
+
+      const favoritoEliminado = await PerfilesCandidateService.eliminarFavorito(id_favorito);
+
+      res.json({
+        success: true,
+        data: favoritoEliminado,
+        message: "Favorito eliminado exitosamente",
+      });
+    } catch (error) {
+      if (error instanceof ValidationError) {
+        res.status(400).json({
+          success: false,
+          message: error.message,
+          field: error.field,
+        });
+      } else if (error instanceof NotFoundError) {
+        res.status(404).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Error interno del servidor",
+          error: (error as Error).message,
+        });
+      }
+    }
+  }
 };
