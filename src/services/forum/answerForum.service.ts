@@ -58,17 +58,16 @@ export const RespuestaService = {
     );
   },
 
+
   async actualizarRespuesta(
     id_respuesta_foro: number,
-    datos: ActualizarRespuestaDTO
+    datos: string,
   ): Promise<Respuesta | null> {
     await this.getRespuestaById(id_respuesta_foro);
 
     return await RespuestaRepository.actualizarRespuesta(
       id_respuesta_foro,
-      datos.id_foro,
-      datos.id_perfil,
-      datos.contenido,
+      datos,
       new Date()
     );
   },

@@ -26,7 +26,6 @@ export class ForumRoutes {
 
     router.post(
       "/",
-      ExpressValidators.crearForo(),
       handleValidationErrors,
       ForoController.crearForo
     );

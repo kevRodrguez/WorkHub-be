@@ -28,4 +28,21 @@ export const ComentarioService = {
     );
     return comentario;
   },
+
+  async deleteComentario(id: number): Promise<void> {
+    await ComentarioRepository.eliminarComentario(id);
+  },
+
+  async actualizarComentario(
+    id_comentario: number,
+    contenido: string,
+    fecha: Date
+  ): Promise<Comentario | null> {
+    const comentario = await ComentarioRepository.actualizarComentario(
+      id_comentario,
+      contenido,
+      fecha
+    );
+    return comentario;
+  },
 };

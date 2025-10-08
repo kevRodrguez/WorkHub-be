@@ -55,7 +55,7 @@ export const ComentarioController = {
     }
   },
 
-  async crearBlog(req: Request, res: Response) {
+  async crearComentario(req: Request, res: Response) {
     try {
       const data: CrearComentario = req.body;
       const blog = await ComentarioService.crearComentario(
@@ -80,6 +80,66 @@ export const ComentarioController = {
         res.status(409).json({
           success: false,
           message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Error interno del servidor",
+          error: (error as Error).message,
+        });
+      }
+    }
+  },
+
+  async eliminarComentario(req: Request, res: Response) {
+    const { id } = req.params;
+    try {
+      await ComentarioService.deleteComentario(parseInt(id));
+      res.json({
+        success: true,
+        message: "Comentario eliminado con éxito",
+      });
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        res.status(404).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Error interno del servidor",
+          error: (error as Error).message,
+        });
+      }
+    }
+  },
+
+  async actualizarComentario(req: Request, res: Response) {
+    const { id } = req.params;
+    const { contenido } = req.body;
+    try {
+      const comentario = await ComentarioService.actualizarComentario(
+        parseInt(id),
+        contenido,
+        new Date()
+      );
+      res.json({
+        success: true,
+        data: comentario,
+        message: "Comentario actualizado con éxito",
+      });
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        res.status(404).json({
+          success: false,
+          message: error.message,
+        });
+      } else if (error instanceof ValidationError) {
+        res.status(400).json({
+          success: false,
+          message: error.message,
+          field: error.field,
         });
       } else {
         res.status(500).json({

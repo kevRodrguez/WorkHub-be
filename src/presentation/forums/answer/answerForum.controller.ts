@@ -151,8 +151,11 @@ export const RespuestaForoController = {
   async actualizarRespuesta(req: Request, res: Response) {
     const id = parseInt(req.params.id, 10);
     const datos = req.body;
+    const contenido = datos.contenido;
+
+    console.log("Datos recibidos para actualizar:", datos);
     try {
-      const respuesta = await RespuestaService.actualizarRespuesta(id, datos);
+      const respuesta = await RespuestaService.actualizarRespuesta(id, contenido);
       res.json({
         success: true,
         data: respuesta,
