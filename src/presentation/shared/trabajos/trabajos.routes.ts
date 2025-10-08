@@ -19,6 +19,13 @@ export class TrabajosRoutes {
       TrabajosController.getTrabajosByPerfilId
     );
 
+    // Ruta para agregar favorito
+    router.post(
+      "/favoritos",
+      handleValidationErrors,
+      TrabajosController.agregarFavorito
+    );
+
     return router;
   }
 }

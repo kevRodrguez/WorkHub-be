@@ -1,6 +1,6 @@
 import { pool } from "../../../config/db";
 import { CustomError } from "../../../utils/CustomError";
-import { Trabajo, TrabajoConDetalles } from "../../../interfaces";
+import { Trabajo, TrabajoConDetalles, TrabajoConEmpresa, Favorito } from "../../../interfaces";
 
 export const TrabajosRepository = {
   async getTrabajos(): Promise<Trabajo[]> {
@@ -34,19 +34,47 @@ export const TrabajosRepository = {
     return result.rows;
   },
 
-  async getTrabajosActivos(): Promise<Trabajo[]> {
+  async getTrabajosActivos(): Promise<TrabajoConEmpresa[]> {
     const result = await pool.query(
-      "SELECT * FROM trabajos WHERE fecha_expiracion >= NOW() AND estado = TRUE ORDER BY fecha_expiracion ASC;"
+      `SELECT 
+        t.*,
+        emp.nombre AS nombre_empresa,
+        emp.link_foto_perfil AS logo_empresa
+      FROM trabajos t
+      LEFT JOIN perfiles emp ON emp.id_perfil = t.id_perfil AND emp.rol = 'empresa'
+      WHERE t.fecha_expiracion >= NOW() AND t.estado = TRUE 
+      ORDER BY t.fecha_expiracion ASC;`
     );
 
     if (result.rows.length === 0) {
       throw new CustomError(
         404,
-        "No se encontraron trabajos para el perfil dado"
+        "No se encontraron trabajos activos"
       );
     }
 
-    return result.rows;
+    return result.rows.map(row => ({
+      id_trabajo: row.id_trabajo,
+      id_perfil: row.id_perfil,
+      id_categoria: row.id_categoria,
+      nombre_trabajo: row.nombre_trabajo,
+      descripcion: row.descripcion,
+      responsabilidades: row.responsabilidades,
+      salario_minimo: row.salario_minimo,
+      salario_maximo: row.salario_maximo,
+      modalidad: row.modalidad,
+      educacion: row.educacion,
+      experiencia: row.experiencia,
+      fecha_expiracion: row.fecha_expiracion,
+      fecha_publicacion: row.fecha_publicacion,
+      nivel: row.nivel,
+      ubicacion: row.ubicacion,
+      cupos: row.cupos,
+      estado: row.estado,
+      aplicar_por: row.aplicar_por,
+      nombre_empresa: row.nombre_empresa,
+      logo_empresa: row.logo_empresa,
+    }));
   },
 
   async getTrabajosById(id_trabajo: number): Promise<TrabajoConDetalles[]> {
@@ -128,6 +156,32 @@ export const TrabajosRepository = {
         descripcion: row.categoria_descripcion,
       } : undefined,
     }));
+  },
+
+  async agregarFavorito(id_perfil: number, id_trabajo: number): Promise<Favorito> {
+    // Verificar si ya existe el favorito
+    const checkResult = await pool.query(
+      `SELECT * FROM favoritos 
+       WHERE id_perfil = $1 AND id_trabajo = $2`,
+      [id_perfil, id_trabajo]
+    );
+
+    if (checkResult.rows.length > 0) {
+      throw new CustomError(
+        409,
+        "Este trabajo ya está en tus favoritos"
+      );
+    }
+
+    // Insertar el favorito
+    const result = await pool.query(
+      `INSERT INTO favoritos (id_perfil, id_trabajo)
+       VALUES ($1, $2)
+       RETURNING *`,
+      [id_perfil, id_trabajo]
+    );
+
+    return result.rows[0];
   },
 };
 
