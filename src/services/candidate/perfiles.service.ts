@@ -224,6 +224,21 @@ export const PerfilesCandidateService = {
     return notificacionActualizada;
   },
 
+  async eliminarFavorito(id_favorito: number): Promise<any> {
+    // Validar que el id_favorito sea un número positivo
+    if (!id_favorito || id_favorito <= 0) {
+      throw new CustomError(400, "El ID del favorito debe ser un número positivo");
+    }
+
+    const favoritoEliminado = await PerfilesRepository.eliminarFavorito(id_favorito);
+
+    if (!favoritoEliminado) {
+      throw new NotFoundError(`Favorito con ID ${id_favorito} no encontrado`);
+    }
+
+    return favoritoEliminado;
+  },
+
   // Sanitización adicional (express-validator ya maneja lo básico)
   sanitizarDatosPerfil(datos: CrearPerfilDTO): CrearPerfilDTO {
     return {

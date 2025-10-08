@@ -303,5 +303,16 @@ export const PerfilesRepository = {
     );
 
     return result.rows[0] || null;
+  },
+
+  async eliminarFavorito(id_favorito: number): Promise<any> {
+    const result = await pool.query(
+      `DELETE FROM favoritos
+       WHERE id_favorito = $1
+       RETURNING *`,
+      [id_favorito]
+    );
+
+    return result.rows[0] || null;
   }
 };

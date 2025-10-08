@@ -54,6 +54,13 @@ export class PerfilCandidateRoutes {
       PerfilesCandidateController.actualizarEstadoNotificacion
     );
 
+    // Ruta para eliminar favoritos
+    router.delete(
+      "/favoritos/:id",
+      handleValidationErrors,
+      PerfilesCandidateController.eliminarFavorito
+    );
+
     return router;
   }
 }
