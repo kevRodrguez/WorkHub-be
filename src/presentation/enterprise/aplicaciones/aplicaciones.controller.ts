@@ -84,4 +84,31 @@ export const AplicacionesEnterpriseController = {
       return next(error);
     }
   },
+
+  async createAplicacion(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    const { id_trabajo, id_candidato, id_curriculum, mensaje, estado } = req.body;
+    console.log({ id_trabajo, id_candidato, id_curriculum, mensaje, estado });
+
+    try {
+      const nuevaAplicacion =
+        await AplicacionesEnterpriseService.createAplicacion(
+          parseInt(id_trabajo),
+          parseInt(id_candidato),
+          parseInt(id_curriculum),
+          mensaje,
+          estado || 'pendiente'
+        );
+      res.status(201).json({
+        success: true,
+        data: nuevaAplicacion,
+        message: "Aplicación creada exitosamente",
+      });
+    } catch (error) {
+      return next(error);
+    }
+  },
 };
