@@ -10,7 +10,6 @@ export class PerfilEnterpriseRoutes {
     router.post(
       "/",
       ExpressValidators.crearPerfilEmpresa(),
-      handleValidationErrors,
       PerfilesEnterpriseController.crearPerfil
     );
 
@@ -23,7 +22,6 @@ export class PerfilEnterpriseRoutes {
     router.put(
       "/:id",
       ExpressValidators.actualizarPerfilEmpresa(),
-      handleValidationErrors,
       PerfilesEnterpriseController.actualizarPerfil
     );
 

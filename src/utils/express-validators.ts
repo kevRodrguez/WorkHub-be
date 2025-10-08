@@ -12,15 +12,9 @@ export class ExpressValidators {
         .withMessage("El ID de usuario es requerido"),
 
       // nombre es opcional pero si se proporciona debe ser válido
-      body("nombre")
-        .optional()
-        .isLength({ min: 2, max: 100 })
-        .withMessage("El nombre debe tener entre 2 y 100 caracteres"),
+      body("nombre").optional(),
       // biografia es opcional pero si se proporciona debe ser válida
-      body("biografia")
-        .optional()
-        .isLength({ min: 10, max: 1000 })
-        .withMessage("La biografía debe tener entre 10 y 1000 caracteres"),
+      body("biografia").optional(),
       // telefono es opcional pero si se proporciona debe ser válido
       body("telefono")
         .optional()
@@ -54,10 +48,7 @@ export class ExpressValidators {
         }),
 
       // ubicacion es opcional pero si se proporciona debe ser válida
-      body("ubicacion")
-        .optional()
-        .isLength({ min: 2, max: 100 })
-        .withMessage("La ubicación debe tener entre 2 y 100 caracteres"),
+      body("ubicacion").optional(),
       // pagina_web es opcional pero si se proporciona debe ser URL válida
       body("pagina_web")
         .optional({ values: "falsy" })
@@ -80,18 +71,13 @@ export class ExpressValidators {
     return [
       // Validar ID en los parámetros
       param("id")
-        .isInt({ min: 1 })
-        .withMessage("El ID del perfil debe ser un número positivo"),
+        .notEmpty()
+        .isUUID()
+        .withMessage("El ID del perfil debe ser un UUID válido"),
 
       // Todos los campos son opcionales para actualización
-      body("nombre")
-        .optional()
-        .isLength({ min: 2, max: 100 })
-        .withMessage("El nombre debe tener entre 2 y 100 caracteres"),
-      body("biografia")
-        .optional()
-        .isLength({ min: 10, max: 1000 })
-        .withMessage("La biografía debe tener entre 10 y 1000 caracteres"),
+      body("nombre").optional(),
+      body("biografia").optional(),
       body("telefono")
         .optional()
         .custom((value) => {
@@ -121,10 +107,7 @@ export class ExpressValidators {
           return true;
         }),
 
-      body("ubicacion")
-        .optional()
-        .isLength({ min: 2, max: 100 })
-        .withMessage("La ubicación debe tener entre 2 y 100 caracteres"),
+      body("ubicacion").optional(),
       body("pagina_web")
         .optional({ values: "falsy" })
         .isURL()
@@ -179,6 +162,56 @@ export class ExpressValidators {
     ];
   }
 
+  // Validaciones para actualizar foro
+  static actualizarForo(): ValidationChain[] {
+    return [
+      param("id")
+        .isInt({ min: 1 })
+        .withMessage("El ID del foro debe ser un número positivo"),
+
+      body("titulo")
+        .notEmpty()
+        .withMessage("El del foro es requerido")
+        .isLength({ min: 2, max: 40 })
+        .withMessage("El nombre del foro debe tener entre 2 y 40 caracteres"),
+      body("contenido")
+        .notEmpty()
+        .withMessage("El contenido es requerido")
+        .isLength({ min: 10, max: 500 })
+        .withMessage("El contenido debe tener entre 10 y 500 caracteres"),
+    ];
+  }
+
+  // Validaciones para crear foro
+  static crearForo(): ValidationChain[] {
+    return [
+      body("titulo")
+        .notEmpty()
+        .withMessage("El nombre del foro es requerido")
+        .isLength({ min: 2, max: 100 })
+        .withMessage("El nombre del foro debe tener entre 2 y 100 caracteres"),
+      body("id_perfil")
+        .notEmpty()
+        .isInt({ min: 1 })
+        .withMessage("Falta id del dueño del foro"),
+    ];
+  }
+
+  // Validaciones para crear foro
+  static validarRespuesta(): ValidationChain[] {
+    return [
+            body("id_perfil")
+        .notEmpty()
+        .isInt()
+        .withMessage("El ID del perfil debe ser válido"),
+      body("contenido")
+        .notEmpty()
+        .withMessage("El contenido de la respuesta es requerido")
+        .isLength({ min: 1, max: 500 })
+        .withMessage("El nombre del foro debe tener entre 1 y 500 caracteres"),
+    ];
+  }
+
   // Validaciones para crear perfil de candidato
   static crearPerfilCandidato(): ValidationChain[] {
     return [
@@ -196,8 +229,8 @@ export class ExpressValidators {
       body("biografia")
         .notEmpty()
         .withMessage("La biografía es requerida")
-        .isLength({ min: 10, max: 1000 })
-        .withMessage("La biografía debe tener entre 10 y 1000 caracteres"),
+        .isLength({ min: 3, max: 1000 })
+        .withMessage("La biografía debe tener entre 3 y 1000 caracteres"),
 
       body("telefono")
         .notEmpty()
@@ -259,7 +292,90 @@ export class ExpressValidators {
     ];
   }
 
-  // Validación de parámetros ID
+  // Validaciones para actualizar perfil de candidato
+  static actualizarPerfilCandidato(): ValidationChain[] {
+    return [
+      // Validar ID en los parámetros
+      param("id")
+        .notEmpty()
+        .isUUID()
+        .withMessage("El ID del perfil debe ser un UUID válido"),
+
+      // Todos los campos son opcionales para actualización
+      body("nombre").optional().trim(),
+
+      body("biografia").optional().trim(),
+
+      body("telefono")
+        .optional()
+        .custom((value) => {
+          if (value && !Validators.isValidPhone(value)) {
+            throw new Error("El formato del teléfono no es válido");
+          }
+          return true;
+        })
+        .trim(),
+
+      body("email")
+        .optional()
+        .isEmail()
+        .withMessage("El formato del email no es válido")
+        .normalizeEmail(),
+
+      body("fecha_nacimiento_fundacion")
+        .optional()
+        .isISO8601()
+        .withMessage(
+          "La fecha de nacimiento debe tener un formato válido (YYYY-MM-DD)"
+        )
+        .custom((value) => {
+          const fecha = new Date(value);
+          if (!Validators.isAdult(fecha)) {
+            throw new Error("El candidato debe ser mayor de edad (18 años)");
+          }
+          return true;
+        }),
+
+      body("genero")
+        .optional()
+        .isIn(["masculino", "femenino", "otro", "prefiero no decir"])
+        .withMessage(
+          "El género debe ser uno de: masculino, femenino, otro, prefiero no decir"
+        ),
+
+      body("estado_civil")
+        .optional()
+        .isIn(["soltero", "casado", "divorciado", "viudo", "unión libre"])
+        .withMessage(
+          "El estado civil debe ser uno de: soltero, casado, divorciado, viudo, unión libre"
+        ),
+
+      body("experiencia").optional().trim(),
+
+      body("educacion").optional().trim(),
+
+      body("ubicacion").optional().trim(),
+
+      body("pagina_web")
+        .optional({ values: "falsy" })
+        .isURL()
+        .withMessage("La URL de la página web no es válida"),
+
+      body("link_foto_perfil")
+        .optional({ values: "falsy" })
+        .isURL()
+        .withMessage("La URL de la foto de perfil no es válida"),
+
+      body("red_social").optional({ values: "falsy" }).trim(),
+
+      body("rol")
+        .optional()
+        .isIn(["candidato", "empresa"])
+        .withMessage("El rol debe ser 'candidato' o 'empresa'"),
+    ];
+  }
+
+  // Validación de parámetros ID (integer)
   static validarIdParametro(): ValidationChain[] {
     return [
       param("id")

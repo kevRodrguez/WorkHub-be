@@ -58,8 +58,6 @@ export const PerfilesEnterpriseRepository = {
     telefono?: string,
     link_foto_perfil?: string,
     fecha_nacimiento_fundacion?: Date,
-    genero?: string,
-    estado_civil?: string,
     ubicacion?: string,
     pagina_web?: string,
     red_social?: string,
@@ -68,17 +66,14 @@ export const PerfilesEnterpriseRepository = {
     const result = await pool.query(
       `UPDATE perfiles SET 
           nombre = $1, biografia = $2, telefono = $3, link_foto_perfil = $4, 
-          fecha_nacimiento_fundacion = $5, genero = $6, estado_civil = $7, 
-          ubicacion = $8, pagina_web = $9, red_social = $10, email = $11
-          WHERE id_usuario = $12 RETURNING *`,
+          fecha_nacimiento_fundacion = $5, ubicacion = $6, pagina_web = $7, red_social = $8, email = $9
+          WHERE id_usuario = $10 RETURNING *`,
       [
         nombre,
         biografia,
         telefono,
         link_foto_perfil,
         fecha_nacimiento_fundacion,
-        genero,
-        estado_civil,
         ubicacion,
         pagina_web,
         red_social,
