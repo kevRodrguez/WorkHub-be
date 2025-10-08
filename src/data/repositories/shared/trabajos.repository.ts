@@ -1,6 +1,6 @@
 import { pool } from "../../../config/db";
 import { CustomError } from "../../../utils/CustomError";
-import { Trabajo, TrabajoConDetalles, TrabajoConEmpresa } from "../../../interfaces";
+import { Trabajo, TrabajoConDetalles, TrabajoConEmpresa, Favorito } from "../../../interfaces";
 
 export const TrabajosRepository = {
   async getTrabajos(): Promise<Trabajo[]> {
@@ -156,6 +156,32 @@ export const TrabajosRepository = {
         descripcion: row.categoria_descripcion,
       } : undefined,
     }));
+  },
+
+  async agregarFavorito(id_perfil: number, id_trabajo: number): Promise<Favorito> {
+    // Verificar si ya existe el favorito
+    const checkResult = await pool.query(
+      `SELECT * FROM favoritos 
+       WHERE id_perfil = $1 AND id_trabajo = $2`,
+      [id_perfil, id_trabajo]
+    );
+
+    if (checkResult.rows.length > 0) {
+      throw new CustomError(
+        409,
+        "Este trabajo ya está en tus favoritos"
+      );
+    }
+
+    // Insertar el favorito
+    const result = await pool.query(
+      `INSERT INTO favoritos (id_perfil, id_trabajo)
+       VALUES ($1, $2)
+       RETURNING *`,
+      [id_perfil, id_trabajo]
+    );
+
+    return result.rows[0];
   },
 };
 

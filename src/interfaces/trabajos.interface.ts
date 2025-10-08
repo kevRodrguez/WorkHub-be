@@ -80,3 +80,15 @@ export interface ActualizarTrabajoDTO {
   cupos: number;
   aplicar_por: "Email" | "WorkHub";
 }
+
+// Interfaces para Favoritos
+export interface Favorito {
+  id_favorito: number;
+  id_perfil: number;
+  id_trabajo: number;
+}
+
+export interface AgregarFavoritoDTO {
+  id_perfil: number;
+  id_trabajo: number;
+}
