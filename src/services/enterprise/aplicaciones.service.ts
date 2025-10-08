@@ -27,4 +27,22 @@ export const AplicacionesEnterpriseService = {
       );
     return aplicaciones;
   },
+
+  async createAplicacion(
+    id_trabajo: number,
+    id_candidato: number,
+    id_curriculum: number,
+    mensaje: string,
+    estado?: string
+  ): Promise<any> {
+    const aplicacion =
+      await AplicacionesEnterpriseRepository.createAplicacion(
+        id_trabajo,
+        id_candidato,
+        id_curriculum,
+        mensaje,
+        estado
+      );
+    return aplicacion;
+  },
 };

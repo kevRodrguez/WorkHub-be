@@ -115,5 +115,42 @@ export const AplicacionesEnterpriseRepository = {
     return result.rows;
   },
 
+  async createAplicacion(
+    id_trabajo: number,
+    id_candidato: number,
+    id_curriculum: number,
+    mensaje: string,
+    estado: string = 'pendiente'
+  ): Promise<any> {
+    const query = `
+      INSERT INTO public.aplicaciones (
+        id_trabajo, 
+        id_candidato, 
+        id_curriculum, 
+        mensaje, 
+        estado
+      ) VALUES (
+        $1,
+        $2,
+        $3,
+        $4,
+        $5
+      )
+      RETURNING *;
+    `;
+    const result = await pool.query(query, [
+      id_trabajo,
+      id_candidato,
+      id_curriculum,
+      mensaje,
+      estado,
+    ]);
+
+    if (!result.rows || result.rows.length === 0) {
+      throw new CustomError(500, "Error al crear la aplicación");
+    }
+
+    return result.rows[0];
+  },
 
 };
