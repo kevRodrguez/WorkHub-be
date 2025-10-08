@@ -7,7 +7,9 @@ export class ComentarioRoutes {
 
     router.get("/", ComentarioController.getComentarios);
     router.get("/blog/:id", ComentarioController.getComentariosByBlogId);
-    router.post("/", ComentarioController.crearBlog);
+    router.post("/", ComentarioController.crearComentario);
+    router.delete("/:id", ComentarioController.eliminarComentario);
+    router.put("/:id", ComentarioController.actualizarComentario);
 
     return router;
   }

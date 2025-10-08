@@ -64,14 +64,12 @@ export const RespuestaRepository = {
 
   async actualizarRespuesta(
     id_respuesta_foro: number,
-    id_foro: number,
-    id_perfil: number,
     contenido: string,
     fecha: Date
   ): Promise<Respuesta | null> {
     const result = await pool.query(
-      "UPDATE respuestas_foros SET id_foro=$2, id_perfil=$3, contenido=$4, fecha=$5 WHERE id_respuesta_foro = $1 RETURNING *",
-      [id_respuesta_foro, id_foro, id_perfil, contenido, fecha]
+      "UPDATE respuestas_foros SET contenido=$2, fecha=$3 WHERE id_respuesta_foro = $1 RETURNING *",
+      [id_respuesta_foro, contenido, fecha]
     );
     return result.rows[0] || null;
   },

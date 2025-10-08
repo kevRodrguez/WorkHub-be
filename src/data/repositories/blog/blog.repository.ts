@@ -8,16 +8,17 @@ export const BlogRepository = {
   },
 
   async getBlogById(id_blog: number): Promise<Blog> {
-    const result = await pool.query(    `
+    const result = await pool.query(
+      `
     SELECT b.*, 
            p.nombre AS nombre_usuario, 
            p.link_foto_perfil
     FROM blogs b
     JOIN perfiles p ON b.id_perfil = p.id_perfil
     WHERE b.id_blog = $1
-    `, [
-      id_blog,
-    ]);
+    `,
+      [id_blog]
+    );
     return result.rows[0];
   },
 
@@ -46,7 +47,10 @@ export const BlogRepository = {
     fecha: Date
   ): Promise<Blog> {
     const result = await pool.query(
-      "UPDATE blogs SET id_categoria = $2, id_perfil = $3, link_miniatura = $4, titulo = $5, contenido =$6, fecha = $7 WHERE id_blog = $1)",
+  `UPDATE blogs 
+   SET id_categoria = $2, id_perfil = $3, link_miniatura = $4, titulo = $5, contenido = $6, fecha = $7
+   WHERE id_blog = $1
+   RETURNING *`,
       [
         id_blog,
         id_categoria,

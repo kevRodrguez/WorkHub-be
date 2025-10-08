@@ -47,14 +47,12 @@ export const ComentarioRepository = {
 
   async actualizarComentario(
     id_comentario: number,
-    id_perfil: number,
-    id_blog: number,
     contenido: string,
     fecha: Date
   ): Promise<Comentario> {
     const result = await pool.query(
-      "UPDATE comentarios SET id_perfil = $2, id_blog = $3, contenido = $4, fecha = $5 WHERE id_comentario = $1)",
-      [id_comentario, id_perfil, id_blog, contenido, fecha]
+      "UPDATE comentarios SET contenido = $1, fecha = $2 WHERE id_comentario = $3 RETURNING *",
+      [contenido, fecha, id_comentario]
     );
     return result.rows[0] || null;
   },
