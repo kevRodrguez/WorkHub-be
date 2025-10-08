@@ -33,7 +33,7 @@ export interface TrabajoConDetalles extends Trabajo {
     red_social?: string;
     fecha_nacimiento_fundacion?: Date;
   };
-  
+
   // Información de la categoría
   categoria?: {
     id_categoria: number;
