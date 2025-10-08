@@ -1,5 +1,5 @@
 import { TrabajosRepository } from "../../data/repositories/shared/trabajos.repository";
-import { Trabajo, TrabajoConDetalles } from "../../interfaces";
+import { Trabajo, TrabajoConDetalles, TrabajoConEmpresa } from "../../interfaces";
 
 export const TrabajosService = {
   async getTrabajos(): Promise<Trabajo[]> {
@@ -14,7 +14,7 @@ export const TrabajosService = {
     return trabajos;
   },
 
-  async getTrabajosActivos(): Promise<Trabajo[]> {
+  async getTrabajosActivos(): Promise<TrabajoConEmpresa[]> {
     const trabajos = await TrabajosRepository.getTrabajosActivos();
 
     return trabajos;

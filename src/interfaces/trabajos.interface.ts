@@ -33,7 +33,7 @@ export interface TrabajoConDetalles extends Trabajo {
     red_social?: string;
     fecha_nacimiento_fundacion?: Date;
   };
-
+  
   // Información de la categoría
   categoria?: {
     id_categoria: number;
@@ -42,7 +42,11 @@ export interface TrabajoConDetalles extends Trabajo {
   };
 }
 
-export interface CrearTrabajoDTO {
+export interface TrabajoConEmpresa extends Trabajo {
+  // Información básica de la empresa
+  nombre_empresa?: string;
+  logo_empresa?: string;
+}export interface CrearTrabajoDTO {
   id_perfil: number;
   id_categoria: number;
   nombre_trabajo: string;
