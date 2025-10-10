@@ -42,7 +42,11 @@ export interface TrabajoConDetalles extends Trabajo {
   };
 }
 
-export interface CrearTrabajoDTO {
+export interface TrabajoConEmpresa extends Trabajo {
+  // Información básica de la empresa
+  nombre_empresa?: string;
+  logo_empresa?: string;
+}export interface CrearTrabajoDTO {
   id_perfil: number;
   id_categoria: number;
   nombre_trabajo: string;
@@ -75,4 +79,16 @@ export interface ActualizarTrabajoDTO {
   ubicacion: string;
   cupos: number;
   aplicar_por: "Email" | "WorkHub";
+}
+
+// Interfaces para Favoritos
+export interface Favorito {
+  id_favorito: number;
+  id_perfil: number;
+  id_trabajo: number;
+}
+
+export interface AgregarFavoritoDTO {
+  id_perfil: number;
+  id_trabajo: number;
 }
