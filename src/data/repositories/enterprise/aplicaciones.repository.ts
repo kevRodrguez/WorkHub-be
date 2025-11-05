@@ -32,7 +32,7 @@ export const AplicacionesEnterpriseRepository = {
       FROM aplicaciones ap
       JOIN perfiles p ON p.id_perfil = ap.id_candidato
       JOIN trabajos t ON t.id_trabajo = ap.id_trabajo
-      JOIN curriculums cv ON cv.id_perfil = p.id_perfil
+      JOIN curriculums cv ON cv.id_curriculum = ap.id_curriculum
       WHERE ap.id_trabajo = $1;
     `;
     const result = await pool.query(query, [id_trabajo]);
