@@ -222,6 +222,7 @@ export const PerfilesCandidateController = {
         message: "Trabajos aplicados obtenidos exitosamente",
       });
     } catch (error) {
+      console.log("errorr encontrado en recently applied:", error);
       if (error instanceof NotFoundError) {
         res.status(404).json({
           success: false,
