@@ -30,18 +30,7 @@ export class Server {
     // CORS
     this.app.use(
       cors({
-        origin: [
-          "http://localhost:4000", 
-          "http://localhost:3000", 
-          "http://localhost:3001", 
-          "http://localhost:5173", 
-          "https://workhub-react.codiq.online"
-        ],
-        credentials: true,
-        methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-        allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
-        exposedHeaders: ["Content-Range", "X-Content-Range"],
-        maxAge: 86400 // 24 hours
+        origin: ["http://localhost:4000", "http://localhost:3000", "http://localhost:3001", 'http://localhost:5173', 'https://workhub-react.codiq.online']
       })
     );
 
