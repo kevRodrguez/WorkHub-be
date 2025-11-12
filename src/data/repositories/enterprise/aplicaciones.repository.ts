@@ -46,36 +46,6 @@ export const AplicacionesEnterpriseRepository = {
   async getAplicacionesByIdEmpresa(id_empresa: number): Promise<any[]> {
     console.log("ID Empresa en el repositorio:", id_empresa); // Verifica que el ID se recibe correctamente
 
-    //!!Query antigua, daba problemas de duplicados
-    // const query = `
-    //   SELECT 
-    //     p.id_perfil,
-    //     ap.id_aplicacion,
-    //     ap.id_trabajo,
-    //     p.nombre,
-    //     p.id_usuario,
-    //     t.nombre_trabajo,
-    //     TO_CHAR(t.fecha_publicacion, 'DD/MM/YYYY') AS fecha_publicacion,
-    //     p.ubicacion,
-    //     p.experiencia,
-    //     p.educacion,
-    //     p.genero,
-    //     ap.estado,
-    //     p.estado_civil,
-    //     p.fecha_nacimiento_fundacion,
-    //     cv.url_curriculum,
-    //     p.email,
-    //     p.pagina_web,
-    //     p.telefono,
-    //     p.biografia,
-    //     p.red_social
-    //   FROM aplicaciones ap
-    //   JOIN perfiles p ON p.id_perfil = ap.id_candidato
-    //   JOIN trabajos t ON t.id_trabajo = ap.id_trabajo
-    //   JOIN curriculums cv ON cv.id_perfil = p.id_perfil
-    //   WHERE t.id_perfil = $1;
-    // `;
-
     const query = `SELECT 
     p.id_perfil,
     ap.id_aplicacion,

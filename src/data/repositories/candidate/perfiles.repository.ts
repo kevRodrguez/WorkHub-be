@@ -183,7 +183,7 @@ export const PerfilesRepository = {
       JOIN public.perfiles p       ON p.id_perfil = a.id_candidato
       JOIN auth.users u            ON u.id = p.id_usuario
       WHERE u.id = $1
-      ORDER BY t.fecha_expiracion ASC NULLS LAST, a.id_aplicacion DESC
+      ORDER BY a.id_aplicacion DESC
       LIMIT 3;`,
       [id_usuario]
     );
