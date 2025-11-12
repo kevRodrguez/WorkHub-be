@@ -7,8 +7,8 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production && \
+# Install all dependencies (including dev dependencies for build)
+RUN npm install && \
     npm cache clean --force
 
 # Copy TypeScript config and source code
@@ -16,8 +16,7 @@ COPY tsconfig.json ./
 COPY src ./src
 
 # Build TypeScript to JavaScript
-RUN npm install --save-dev typescript rimraf && \
-    npm run build
+RUN npm run build
 
 # Production stage
 FROM node:20-alpine
@@ -29,7 +28,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install only production dependencies
-RUN npm ci --only=production && \
+RUN npm install --omit=dev && \
     npm cache clean --force
 
 # Copy built application from builder stage
