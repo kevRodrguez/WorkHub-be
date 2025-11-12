@@ -33,8 +33,8 @@ export const BlogController = {
     try {
       const data: CrearBlogDTO = req.body;
       const blog = await BlogService.crearBlog(
-        data.id_categoria,
         data.id_perfil,
+        data.id_categoria,
         data.link_miniatura,
         data.titulo,
         data.contenido,
