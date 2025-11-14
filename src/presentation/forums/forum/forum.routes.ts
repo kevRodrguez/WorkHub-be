@@ -32,8 +32,7 @@ export class ForumRoutes {
 
     router.put(
       "/:id",
-      ExpressValidators.actualizarCategoria(),
-      handleValidationErrors,
+
       ForoController.actualizarForo
     );
 

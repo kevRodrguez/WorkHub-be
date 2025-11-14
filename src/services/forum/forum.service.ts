@@ -49,21 +49,13 @@ export const ForoService = {
     );
   },
 
-  async actualizarForo(
+  async actualizarContenidoForo(
     id_foro: number,
-    datos: ActualizarForoDTO
+    contenido: string
   ): Promise<Foro | null> {
     // Verificar que el foro existe
     await this.getForoById(id_foro);
-
-    return await ForosRepository.actualizarForo(
-      id_foro,
-      datos.id_categoria,
-      datos.id_perfil,
-      datos.titulo,
-      datos.contenido,
-      new Date()
-    );
+    return await ForosRepository.actualizarContenidoForo(id_foro, contenido);
   },
 
   async eliminarForo(id_foro: number): Promise<Foro | null> {

@@ -120,9 +120,9 @@ export const ForoController = {
 
   async actualizarForo(req: Request, res: Response) {
     const id = parseInt(req.params.id, 10);
-    const datos = req.body;
+    const { contenido } = req.body;
     try {
-      const foroActualizado = await ForoService.actualizarForo(id, datos);
+      const foroActualizado = await ForoService.actualizarContenidoForo(id, contenido);
       res.json({
         success: true,
         data: foroActualizado,

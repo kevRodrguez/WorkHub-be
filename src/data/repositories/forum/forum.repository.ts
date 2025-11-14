@@ -43,17 +43,13 @@ export const ForosRepository = {
     return result.rows[0];
   },
 
-  async actualizarForo(
+  async actualizarContenidoForo(
     id_foro: number,
-    id_categoria: number,
-    id_perfil: number,
-    titulo: string,
-    contenido: string,
-    fecha: Date
+    contenido: string
   ): Promise<Foro | null> {
     const result = await pool.query(
-      "UPDATE foros SET id_categoria = $1, id_perfil=$2, titulo=$3, contenido=$4, fecha=$5 WHERE id_foro = $6 RETURNING *",
-      [id_categoria, id_perfil, titulo, contenido, fecha, id_foro]
+      "UPDATE foros SET contenido = $1 WHERE id_foro = $2 RETURNING *",
+      [contenido, id_foro]
     );
     return result.rows[0] || null;
   },

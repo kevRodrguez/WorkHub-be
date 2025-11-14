@@ -15,6 +15,7 @@ export const handleValidationErrors = (
       value: error.type === "field" ? error.value : undefined,
     }));
 
+    console.log('🔴 ERRORES DE VALIDACIÓN:', JSON.stringify(formattedErrors, null, 2));
     return res.status(400).json({
       success: false,
       message: "Errores de validación",

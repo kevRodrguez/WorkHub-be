@@ -26,6 +26,7 @@ export const PerfilesEnterpriseController = {
         message: "Perfil de empresa creado exitosamente",
       });
     } catch (error) {
+      console.log('🔴 ERROR EN CREAR PERFIL:', error);
       if (error instanceof ValidationError) {
         res.status(400).json({
           success: false,
