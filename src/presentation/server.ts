@@ -30,7 +30,7 @@ export class Server {
     // CORS
     this.app.use(
       cors({
-        origin: ["http://localhost:4000", "http://localhost:3000", "http://localhost:3001", 'http://localhost:5173', 'https://workhub-react.codiq.online/']
+        origin: ["http://localhost:4000", "http://localhost:3000", "http://localhost:3001", 'http://localhost:5173', 'https://workhub-react.codiq.online']
       })
     );
 
