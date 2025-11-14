@@ -79,6 +79,7 @@ export const PerfilesCandidateController = {
         message: "Perfil creado exitosamente",
       });
     } catch (error) {
+      console.log
       if (error instanceof ValidationError) {
         res.status(400).json({
           success: false,
