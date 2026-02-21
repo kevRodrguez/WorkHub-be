@@ -50,6 +50,7 @@ export class PerfilCandidateRoutes {
     // Ruta para actualizar el estado de las notificaciones
     router.put(
       "/notificaciones/:id",
+      ExpressValidators.validarIdParametro(),
       handleValidationErrors,
       PerfilesCandidateController.actualizarEstadoNotificacion
     );
@@ -57,6 +58,7 @@ export class PerfilCandidateRoutes {
     // Ruta para eliminar favoritos
     router.delete(
       "/favoritos/:id",
+      ExpressValidators.validarIdParametro(),
       handleValidationErrors,
       PerfilesCandidateController.eliminarFavorito
     );

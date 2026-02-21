@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { PerfilesCandidateService } from "../../../services/candidate/perfiles.service";
 import {
   CrearPerfilDTO,
@@ -12,7 +12,7 @@ import {
 import { UUID } from "crypto";
 
 export const PerfilesCandidateController = {
-  async getPerfiles(req: Request, res: Response) {
+  async getPerfiles(req: Request, res: Response, next: NextFunction) {
     try {
       const perfiles = await PerfilesCandidateService.getPerfiles();
       res.json({
@@ -21,15 +21,11 @@ export const PerfilesCandidateController = {
         message: "Perfiles obtenidos exitosamente",
       });
     } catch (error) {
-      res.status(500).json({
-        success: false,
-        message: "Error interno del servidor",
-        error: (error as Error).message,
-      });
+      next(error);
     }
   },
 
-  async getPerfilById(req: Request, res: Response) {
+  async getPerfilById(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id as UUID;
       const perfil = await PerfilesCandidateService.getPerfilById(id);
@@ -40,28 +36,11 @@ export const PerfilesCandidateController = {
         message: "Perfil obtenido exitosamente",
       });
     } catch (error) {
-      if (error instanceof ValidationError) {
-        res.status(400).json({
-          success: false,
-          message: error.message,
-          field: error.field,
-        });
-      } else if (error instanceof NotFoundError) {
-        res.status(404).json({
-          success: false,
-          message: error.message,
-        });
-      } else {
-        res.status(500).json({
-          success: false,
-          message: "Error interno del servidor",
-          error: (error as Error).message,
-        });
-      }
+      next(error);
     }
   },
 
-  async insertarPerfil(req: Request, res: Response) {
+  async insertarPerfil(req: Request, res: Response, next: NextFunction) {
     try {
       const datos: CrearPerfilDTO = {
         ...req.body,
@@ -79,28 +58,11 @@ export const PerfilesCandidateController = {
         message: "Perfil creado exitosamente",
       });
     } catch (error) {
-      if (error instanceof ValidationError) {
-        res.status(400).json({
-          success: false,
-          message: error.message,
-          field: error.field,
-        });
-      } else if (error instanceof BusinessRuleError) {
-        res.status(409).json({
-          success: false,
-          message: error.message,
-        });
-      } else {
-        res.status(500).json({
-          success: false,
-          message: "Error interno del servidor",
-          error: (error as Error).message,
-        });
-      }
+      next(error);
     }
   },
 
-  async actualizarPerfil(req: Request, res: Response) {
+  async actualizarPerfil(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id as UUID;
       const datos: ActualizarPerfilDTO = {
@@ -122,33 +84,11 @@ export const PerfilesCandidateController = {
         message: "Perfil actualizado exitosamente",
       });
     } catch (error) {
-      if (error instanceof ValidationError) {
-        res.status(400).json({
-          success: false,
-          message: error.message,
-          field: error.field,
-        });
-      } else if (error instanceof NotFoundError) {
-        res.status(404).json({
-          success: false,
-          message: error.message,
-        });
-      } else if (error instanceof BusinessRuleError) {
-        res.status(409).json({
-          success: false,
-          message: error.message,
-        });
-      } else {
-        res.status(500).json({
-          success: false,
-          message: "Error interno del servidor",
-          error: (error as Error).message,
-        });
-      }
+      next(error);
     }
   },
 
-  async eliminarPerfil(req: Request, res: Response) {
+  async eliminarPerfil(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id as UUID;
       const perfilEliminado = await PerfilesCandidateService.eliminarPerfil(id);
@@ -159,33 +99,11 @@ export const PerfilesCandidateController = {
         message: "Perfil eliminado exitosamente",
       });
     } catch (error) {
-      if (error instanceof ValidationError) {
-        res.status(400).json({
-          success: false,
-          message: error.message,
-          field: error.field,
-        });
-      } else if (error instanceof NotFoundError) {
-        res.status(404).json({
-          success: false,
-          message: error.message,
-        });
-      } else if (error instanceof BusinessRuleError) {
-        res.status(409).json({
-          success: false,
-          message: error.message,
-        });
-      } else {
-        res.status(500).json({
-          success: false,
-          message: "Error interno del servidor",
-          error: (error as Error).message,
-        });
-      }
+      next(error);
     }
   },
 
-  async getTrabajosAplicados(req: Request, res: Response) {
+  async getTrabajosAplicados(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id as UUID;
       const trabajos = await PerfilesCandidateService.getTrabajosAplicados(id);
@@ -196,22 +114,11 @@ export const PerfilesCandidateController = {
         message: "Trabajos aplicados obtenidos exitosamente",
       });
     } catch (error) {
-      if (error instanceof NotFoundError) {
-        res.status(404).json({
-          success: false,
-          message: error.message,
-        });
-      } else {
-        res.status(500).json({
-          success: false,
-          message: "Error interno del servidor",
-          error: (error as Error).message,
-        });
-      }
+      next(error);
     }
   },
 
-  async getTopTrabajosAplicados(req: Request, res: Response) {
+  async getTopTrabajosAplicados(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id as UUID;
       const trabajos = await PerfilesCandidateService.getTopTrabajosAplicados(id);
@@ -222,23 +129,11 @@ export const PerfilesCandidateController = {
         message: "Trabajos aplicados obtenidos exitosamente",
       });
     } catch (error) {
-      console.log("errorr encontrado en recently applied:", error);
-      if (error instanceof NotFoundError) {
-        res.status(404).json({
-          success: false,
-          message: error.message,
-        });
-      } else {
-        res.status(500).json({
-          success: false,
-          message: "Error interno del servidor",
-          error: (error as Error).message,
-        });
-      }
+      next(error);
     }
   },
 
-  async getTrabajosFavoritos(req: Request, res: Response) {
+  async getTrabajosFavoritos(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id as UUID;
       const trabajos = await PerfilesCandidateService.getTrabajosFavoritos(id);
@@ -249,21 +144,10 @@ export const PerfilesCandidateController = {
         message: "Trabajos favoritos obtenidos exitosamente",
       });
     } catch (error) {
-      if (error instanceof NotFoundError) {
-        res.status(404).json({
-          success: false,
-          message: error.message,
-        });
-      } else {
-        res.status(500).json({
-          success: false,
-          message: "Error interno del servidor",
-          error: (error as Error).message,
-        });
-      }
+      next(error);
     }
   },
-  async getProfileStats(req: Request, res: Response) {
+  async getProfileStats(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id as UUID;
       const stats = await PerfilesCandidateService.getProfileStats(id);
@@ -274,22 +158,11 @@ export const PerfilesCandidateController = {
         message: "Estadísticas del perfil obtenidas exitosamente",
       });
     } catch (error) {
-      if (error instanceof NotFoundError) {
-        res.status(404).json({
-          success: false,
-          message: error.message,
-        });
-      } else {
-        res.status(500).json({
-          success: false,
-          message: "Error interno del servidor",
-          error: (error as Error).message,
-        });
-      }
+      next(error);
     }
   },
 
-  async getAlertasTrabajos(req: Request, res: Response) {
+  async getAlertasTrabajos(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id as UUID;
       const alertas = await PerfilesCandidateService.getAlertasTrabajos(id);
@@ -300,22 +173,11 @@ export const PerfilesCandidateController = {
         message: "Alertas de trabajos obtenidas exitosamente",
       });
     } catch (error) {
-      if (error instanceof NotFoundError) {
-        res.status(404).json({
-          success: false,
-          message: error.message,
-        });
-      } else {
-        res.status(500).json({
-          success: false,
-          message: "Error interno del servidor",
-          error: (error as Error).message,
-        });
-      }
+      next(error);
     }
   },
 
-  async actualizarEstadoNotificacion(req: Request, res: Response) {
+  async actualizarEstadoNotificacion(req: Request, res: Response, next: NextFunction) {
     try {
       const id_notificacion = parseInt(req.params.id);
       const { leido } = req.body;
@@ -331,28 +193,11 @@ export const PerfilesCandidateController = {
         message: "Estado de notificación actualizado exitosamente",
       });
     } catch (error) {
-      if (error instanceof ValidationError) {
-        res.status(400).json({
-          success: false,
-          message: error.message,
-          field: error.field,
-        });
-      } else if (error instanceof NotFoundError) {
-        res.status(404).json({
-          success: false,
-          message: error.message,
-        });
-      } else {
-        res.status(500).json({
-          success: false,
-          message: "Error interno del servidor",
-          error: (error as Error).message,
-        });
-      }
+      next(error);
     }
   },
 
-  async eliminarFavorito(req: Request, res: Response) {
+  async eliminarFavorito(req: Request, res: Response, next: NextFunction) {
     try {
       const id_favorito = parseInt(req.params.id);
 
@@ -364,24 +209,7 @@ export const PerfilesCandidateController = {
         message: "Favorito eliminado exitosamente",
       });
     } catch (error) {
-      if (error instanceof ValidationError) {
-        res.status(400).json({
-          success: false,
-          message: error.message,
-          field: error.field,
-        });
-      } else if (error instanceof NotFoundError) {
-        res.status(404).json({
-          success: false,
-          message: error.message,
-        });
-      } else {
-        res.status(500).json({
-          success: false,
-          message: "Error interno del servidor",
-          error: (error as Error).message,
-        });
-      }
+      next(error);
     }
   }
 };
